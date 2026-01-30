@@ -12,6 +12,7 @@ interface GameContextType {
     gatesNeeded: number;
     showLevelUp: boolean;
     gatePopup: string | null;
+    waveHint: string | null;
     volume: number;
     setVolume: (volume: number) => void;
     startGame: () => void;
@@ -42,11 +43,14 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const [gatesCollected, setGatesCollected] = useState(0);
     const [showLevelUp, setShowLevelUp] = useState(false);
     const [gatePopup, setGatePopup] = useState<string | null>(null);
+    const [waveHint, setWaveHint] = useState<string | null>(null);
     const [explosionPosition, setExplosionPosition] = useState<Vector3 | null>(null);
     const [volume, setVolume] = useState(0.1); // Default 10%
 
     const startGame = useCallback(() => {
         setIsGameStarted(true);
+        setWaveHint('Hold up to boost!');
+        setTimeout(() => setWaveHint(null), 3000);
     }, []);
 
     const setBoosting = useCallback((boosting: boolean) => {
@@ -67,6 +71,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setLevel(1);
         setGatesCollected(0);
         setShowLevelUp(false);
+        setWaveHint('Hold up to boost!');
+        setTimeout(() => setWaveHint(null), 3000);
         setExplosionPosition(null);
         playerPosition.current.set(0, 0.5, 0);
     }, []);
@@ -87,7 +93,17 @@ export function GameProvider({ children }: { children: ReactNode }) {
             if (newCount >= gatesNeeded) {
                 // Level up!
                 setShowLevelUp(true);
-                setLevel((l) => l + 1);
+                setLevel((l) => {
+                    const next = l + 1;
+                    const hints: Record<number, string> = {
+                        2: 'Press space to jump!',
+                    };
+                    if (hints[next]) {
+                        setWaveHint(hints[next]);
+                        setTimeout(() => setWaveHint(null), 3000);
+                    }
+                    return next;
+                });
                 // Hide level up message after 2 seconds
                 setTimeout(() => setShowLevelUp(false), 2000);
                 return 0; // Reset gates for next level
@@ -111,6 +127,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
                 gatesNeeded: getGatesForLevel(level),
                 showLevelUp,
                 gatePopup,
+                waveHint,
                 volume,
                 setVolume,
                 startGame,

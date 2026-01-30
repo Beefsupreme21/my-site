@@ -20,7 +20,7 @@ function NeonRing({ y, radius, color }: { y: number; radius: number; color: stri
     );
 }
 
-type ObstacleType = 'cylinder' | 'low_bar' | 'easy_wall' | 'high_bar' | 'arch' | 'simple_bar';
+type ObstacleType = 'cylinder' | 'low_bar' | 'easy_wall' | 'high_bar' | 'arch' | 'simple_bar' | 'triple_wall';
 
 interface ObstacleProps {
     position: [number, number, number];
@@ -43,7 +43,7 @@ export default function Obstacle({ position, onPassed, speed, type }: ObstaclePr
     const { playerPosition, triggerExplosion, isGameOver, incrementScore, collectGate } = useGame();
 
     useFrame((_, delta) => {
-        const ref = (type === 'arch' || type === 'high_bar' || type === 'low_bar' || type === 'easy_wall') ? groupRef.current : meshRef.current;
+        const ref = (type === 'arch' || type === 'high_bar' || type === 'low_bar' || type === 'easy_wall' || type === 'triple_wall') ? groupRef.current : meshRef.current;
         if (!ref || isGameOver) return;
 
         // Move obstacle toward player (positive Z)
@@ -168,6 +168,45 @@ export default function Obstacle({ position, onPassed, speed, type }: ObstaclePr
                     }
                 }
                 
+                if (collision) {
+                    hasCollided.current = true;
+                    triggerExplosion(new Vector3(playerPos.x, playerPos.y, playerPos.z));
+                }
+            }
+        }
+
+        // Collision for triple wall (3 bars, one has horizontal gap): like low_bar but 3 rows
+        if (type === 'triple_wall' && !hasCollided.current) {
+            const obstaclePos = ref.position;
+            const playerPos = playerPosition.current;
+            const dz = Math.abs(obstaclePos.z - playerPos.z);
+            const isInZRange = dz < 1.5;
+            const encoded = Math.floor(Number(position[1]));
+            const gapSlot = Math.floor(encoded / 8) % 3;
+            const gapIndex = encoded % 8;
+            const gapX = (gapIndex - 4) * 1.5;
+            const gapWidth = 3;
+            const isInGapX = Math.abs(playerPos.x - gapX) < gapWidth / 2;
+
+            if (isInZRange) {
+                let collision = false;
+                if (gapSlot === 0) {
+                    // Gap at bottom row – stay low and in gap X to pass
+                    const isOnGround = playerPos.y < 1.8;
+                    if (isOnGround && isInGapX) collision = false;
+                    else if (isOnGround && !isInGapX) collision = true;
+                    else collision = true; // jumping hits top/middle bars
+                } else if (gapSlot === 1) {
+                    // Gap in middle row – must jump through gap (right Y and in gap X)
+                    const isInGapY = playerPos.y > 1.5 && playerPos.y < 3.8;
+                    if (isInGapY && isInGapX) collision = false;
+                    else collision = true;
+                } else {
+                    // Gap at top row – must jump high and be in gap X
+                    const isInGapY = playerPos.y > 3.5;
+                    if (isInGapY && isInGapX) collision = false;
+                    else collision = true;
+                }
                 if (collision) {
                     hasCollided.current = true;
                     triggerExplosion(new Vector3(playerPos.x, playerPos.y, playerPos.z));
@@ -392,6 +431,55 @@ export default function Obstacle({ position, onPassed, speed, type }: ObstaclePr
                 ) : (
                     <WallBlock pos={[0, 2, 0]} size={[trackHalfWidth * 2, 2, 2]} />
                 )}
+            </group>
+        );
+    }
+
+    // Render 3-high wall – level 4: 3 full-width bars, one bar has horizontal gap (like wave 3)
+    if (type === 'triple_wall') {
+        const encoded = Math.floor(Number(position[1]));
+        const gapSlot = Math.floor(encoded / 8) % 3; // which row has the gap (0=bottom, 1=middle, 2=top)
+        const gapIndex = encoded % 8;
+        const gapX = (gapIndex - 4) * 1.5;
+        const gapWidth = 3;
+        const segmentHeight = 2;
+        const trackHalfWidth = 9;
+
+        const leftWidth = (gapX - gapWidth / 2) - (-trackHalfWidth);
+        const leftCenter = -trackHalfWidth + leftWidth / 2;
+        const rightWidth = trackHalfWidth - (gapX + gapWidth / 2);
+        const rightCenter = trackHalfWidth - rightWidth / 2;
+
+        const WallBlock = ({ pos, size }: { pos: [number, number, number]; size: [number, number, number] }) => (
+            <mesh position={pos}>
+                <boxGeometry args={size} />
+                <meshStandardMaterial
+                    color="#ff8800"
+                    emissive="#ff6600"
+                    emissiveIntensity={0.6}
+                    metalness={0.8}
+                    roughness={0.2}
+                    transparent
+                    opacity={0.9}
+                />
+            </mesh>
+        );
+
+        const FullRow = ({ slotIndex }: { slotIndex: number }) => (
+            <WallBlock pos={[0, slotIndex * segmentHeight + segmentHeight / 2, 0]} size={[trackHalfWidth * 2, segmentHeight, 2]} />
+        );
+        const GapRow = ({ slotIndex }: { slotIndex: number }) => (
+            <>
+                {leftWidth > 0.5 && <WallBlock pos={[leftCenter, slotIndex * segmentHeight + segmentHeight / 2, 0]} size={[leftWidth, segmentHeight, 2]} />}
+                {rightWidth > 0.5 && <WallBlock pos={[rightCenter, slotIndex * segmentHeight + segmentHeight / 2, 0]} size={[rightWidth, segmentHeight, 2]} />}
+            </>
+        );
+
+        return (
+            <group ref={groupRef} position={[position[0], segmentHeight / 2, position[2]]}>
+                {gapSlot === 0 ? <GapRow slotIndex={0} /> : <FullRow slotIndex={0} />}
+                {gapSlot === 1 ? <GapRow slotIndex={1} /> : <FullRow slotIndex={1} />}
+                {gapSlot === 2 ? <GapRow slotIndex={2} /> : <FullRow slotIndex={2} />}
             </group>
         );
     }

@@ -13,7 +13,7 @@ const LEVEL_CONFIG = {
         gridColor: '#ff00ff',
         borderColor: '#ff00ff',
         emissive: '#220033',
-        speedMultiplier: 1.0,
+        speedMultiplier: 1.2,
     },
     2: {
         gridColor: '#00ffff',
@@ -27,6 +27,12 @@ const LEVEL_CONFIG = {
         emissive: '#003322',
         speedMultiplier: 1.67,
     },
+    4: {
+        gridColor: '#ff6600',
+        borderColor: '#ff8800',
+        emissive: '#331100',
+        speedMultiplier: 1.85,
+    },
 };
 
 export default function Track() {
@@ -35,7 +41,7 @@ export default function Track() {
     const { level, isBoosting } = useGame();
 
     // Get config for current level (default to level 1 if not defined)
-    const config = LEVEL_CONFIG[level as keyof typeof LEVEL_CONFIG] || LEVEL_CONFIG[1];
+    const config = LEVEL_CONFIG[level as keyof typeof LEVEL_CONFIG] || LEVEL_CONFIG[4];
     const boostMultiplier = isBoosting ? 2.0 : 1.0;
     const trackSpeed = BASE_SPEED * config.speedMultiplier * boostMultiplier;
 

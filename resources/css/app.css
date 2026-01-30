@@ -6,6 +6,9 @@
 @theme {
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Site gradient – two colors: light purple → purple (change here to reskin) */
+    --gradient-from: 233, 213, 255; /* purple-200 */
+    --gradient-to: 168, 85, 247;    /* purple-500 */
 }
 
 @keyframes scroll-skills {
@@ -19,6 +22,21 @@
 
 .animate-scroll-skills {
     animation: scroll-skills 30s linear infinite;
+}
+
+@keyframes wave-hint-fade {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 /* Gradient overlay for section texture - Laravel Reverb style */

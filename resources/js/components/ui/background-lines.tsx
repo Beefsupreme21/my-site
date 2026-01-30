@@ -10,9 +10,14 @@ export const BackgroundLines = ({
   children: React.ReactNode;
   className?: string;
   svgOptions?: {
+    /** Animation duration per line (seconds). Default 20. Lower = faster flow. */
     duration?: number;
+    /** Line thickness. Default 0.5. Bigger = more visible (e.g. 1.5, 2). */
     strokeWidth?: number;
+    /** Delay between each path starting (seconds). Lower = more frequent / overlapping. Default 0.2. */
     delayMultiplier?: number;
+    /** Single color for all lines (e.g. "#3b82f6"). If set, overrides the default multi-color array. */
+    strokeColor?: string;
   };
 }) => {
   const [mounted, setMounted] = useState(false);
@@ -48,6 +53,7 @@ const SVG = ({
     duration?: number;
     strokeWidth?: number;
     delayMultiplier?: number;
+    strokeColor?: string;
   };
 }) => {
   const paths = [
@@ -92,9 +98,11 @@ const SVG = ({
     "#604483",
   ];
 
-  const duration = svgOptions?.duration || 20;
-  const strokeWidth = svgOptions?.strokeWidth || 0.5;
-  const delayMultiplier = svgOptions?.delayMultiplier || 0.2;
+  const duration = svgOptions?.duration ?? 20;
+  const strokeWidth = svgOptions?.strokeWidth ?? 0.5;
+  const delayMultiplier = svgOptions?.delayMultiplier ?? 0.2;
+  const strokeColor = svgOptions?.strokeColor;
+  const pathStroke = strokeColor ?? colors;
 
   return (
     <svg
@@ -109,7 +117,7 @@ const SVG = ({
         <motion.path
           key={`path-${idx}`}
           d={path}
-          stroke={colors[idx % colors.length]}
+          stroke={typeof pathStroke === "string" ? pathStroke : pathStroke[idx % pathStroke.length]}
           strokeWidth={strokeWidth}
           initial="initial"
           animate="animate"
@@ -128,7 +136,7 @@ const SVG = ({
         <motion.path
           key={`path-duplicate-${idx}`}
           d={path}
-          stroke={colors[idx % colors.length]}
+          stroke={typeof pathStroke === "string" ? pathStroke : pathStroke[idx % pathStroke.length]}
           strokeWidth={strokeWidth}
           initial="initial"
           animate="animate"

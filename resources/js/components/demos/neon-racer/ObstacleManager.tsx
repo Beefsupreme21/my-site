@@ -14,7 +14,7 @@ const BASE_OBSTACLE_SPEED = 12;
 // Level scaling
 const LEVEL_CONFIG = {
     1: { 
-        speedMultiplier: 1.15,
+        speedMultiplier: 1.25,
         spawnInterval: 2000,     // Bit tighter now
         mode: 'tutorial',        // Few small obstacles, easy
     },
@@ -28,6 +28,11 @@ const LEVEL_CONFIG = {
         spawnInterval: 1600,
         mode: 'hard',            // More cylinders, faster
     },
+    4: { 
+        speedMultiplier: 1.85,
+        spawnInterval: 1500,
+        mode: 'triple_wall',     // 3-high walls, gap can be middle (jump through)
+    },
 };
 
 export default function ObstacleManager() {
@@ -36,7 +41,7 @@ export default function ObstacleManager() {
     const spawnCountRef = useRef(0);
     const { isGameStarted, isGameOver, isBoosting, level } = useGame();
 
-    const config = LEVEL_CONFIG[level as keyof typeof LEVEL_CONFIG] || LEVEL_CONFIG[1];
+    const config = LEVEL_CONFIG[level as keyof typeof LEVEL_CONFIG] || LEVEL_CONFIG[4];
     const boostMultiplier = isBoosting ? 2.0 : 1.0;
     const obstacleSpeed = BASE_OBSTACLE_SPEED * config.speedMultiplier * boostMultiplier;
 
@@ -58,7 +63,16 @@ export default function ObstacleManager() {
             let currentId = nextId;
             spawnCountRef.current += 1;
 
-            if (config.mode === 'tutorial') {
+            // Level 4+ always use 3-high walls (triple_wall): gap is horizontal opening in one of 3 rows, like wave 3
+            if (level >= 4) {
+                const gapSlot = Math.floor(Math.random() * 3);   // which row has the gap (0=bottom, 1=middle, 2=top)
+                const gapIndex = Math.floor(Math.random() * 8);   // 0-7 for horizontal position (same as low_bar)
+                newObstacles.push({
+                    id: currentId++,
+                    position: [0, gapSlot * 8 + gapIndex, SPAWN_Z],
+                    type: 'triple_wall',
+                });
+            } else if (config.mode === 'tutorial') {
                 // LEVEL 1: Few small obstacles - dodge OR jump
                 const roll = Math.random();
                 const xPos = (Math.random() - 0.5) * 12; // Random position
@@ -153,7 +167,7 @@ export default function ObstacleManager() {
         }, config.spawnInterval);
 
         return () => clearInterval(interval);
-    }, [nextId, isGameStarted, isGameOver, config]);
+    }, [nextId, isGameStarted, isGameOver, config, level]);
 
     // Spawn gates between obstacles (1.5, 3.5, 5.5...)
     useEffect(() => {

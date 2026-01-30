@@ -1,7 +1,7 @@
 import { useGame } from './GameContext';
 
 export default function GameOverlay() {
-    const { isGameStarted, isGameOver, score, level, gatesCollected, gatesNeeded, showLevelUp, gatePopup, volume, setVolume, startGame, restartGame } = useGame();
+    const { isGameStarted, isGameOver, score, level, gatesCollected, gatesNeeded, showLevelUp, gatePopup, waveHint, volume, setVolume, startGame, restartGame } = useGame();
 
     return (
         <>
@@ -44,8 +44,8 @@ export default function GameOverlay() {
                 </div>
             )}
 
-            {/* Volume Control - always visible, even on death screen */}
-            <div className="absolute left-6 top-6 z-30">
+            {/* Volume Control - below Back to Home, always visible */}
+            <div className="absolute left-6 top-14 z-30">
                 <div className="rounded-lg bg-black/50 px-4 py-3 backdrop-blur-sm">
                     <p className="font-mono text-xs uppercase tracking-widest text-white/50 mb-2">Volume</p>
                     <div className="flex items-center gap-3">
@@ -68,9 +68,28 @@ export default function GameOverlay() {
                 </div>
             </div>
 
-            {/* Gate Popup - shows when passing through gate */}
+            {/* Wave hint - upper third, e.g. "Hold up to boost!" at start of wave 1, fades away */}
+            {waveHint && isGameStarted && !isGameOver && (
+                <div
+                    className="absolute inset-x-0 top-[22%] z-15 flex justify-center pointer-events-none"
+                    style={{
+                        animation: 'wave-hint-fade 3s ease-out forwards',
+                    }}
+                >
+                    <p
+                        className="font-mono text-lg tracking-wide text-cyan-300/95 px-4 py-2 rounded-lg bg-black/40 backdrop-blur-sm"
+                        style={{
+                            textShadow: '0 0 12px rgba(0, 255, 255, 0.5)',
+                        }}
+                    >
+                        {waveHint}
+                    </p>
+                </div>
+            )}
+
+            {/* Gate Popup - center, e.g. "2/4" when passing through gate */}
             {gatePopup && !isGameOver && (
-                <div className="absolute inset-0 z-15 flex items-center justify-center pointer-events-none">
+                <div className="absolute inset-x-0 top-[42%] z-15 flex justify-center pointer-events-none">
                     <div
                         className="font-mono text-6xl font-black tracking-widest text-green-400 animate-bounce"
                         style={{
@@ -105,9 +124,9 @@ export default function GameOverlay() {
             </div>
             )}
 
-            {/* Level Up Celebration */}
+            {/* Level Up Celebration - lower third so it doesn't overlap gate popup / wave hint */}
             {showLevelUp && (
-                <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+                <div className="absolute inset-x-0 top-[52%] z-20 flex justify-center pointer-events-none">
                     <div className="text-center">
                         <h1
                             className="font-mono text-6xl font-black tracking-widest text-yellow-400 animate-pulse"

@@ -4,10 +4,14 @@ import ObstacleManager from './ObstacleManager';
 import Explosion from './Explosion';
 import Sun from './Sun';
 import SpeedLines from './SpeedLines';
+import Starfield from './Starfield';
 
 export default function Scene() {
     return (
         <>
+            {/* Space-style starfield (background) */}
+            <Starfield />
+
             {/* Synthwave sun */}
             <Sun />
 

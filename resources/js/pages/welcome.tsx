@@ -1,9 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
 import { EncryptedText } from '@/components/ui/encrypted-text';
+import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
 import { NoiseBackground } from '@/components/ui/noise-background';
-import { BackgroundLines } from '@/components/ui/background-lines';
 import { SkillsCarousel } from '@/components/ui/skills-carousel';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
+import { Timeline } from '@/components/ui/timeline';
 import {
   ReactLogo,
   LaravelLogo,
@@ -15,6 +16,7 @@ import {
   SqlLogo,
   GithubLogo,
   LinkedInLogo,
+  EmailIcon,
 } from '@/components/logos';
 
 export default function Welcome() {
@@ -22,107 +24,111 @@ export default function Welcome() {
         <>
             <Head title="Welcome" />
             <div className="min-h-screen bg-[#FDFDFC] dark:bg-[#0a0a0a]">
-                {/* Hero Section */}
-                <BackgroundLines 
-                    className="flex min-h-[70vh] flex-col items-center justify-center gap-8 px-6 py-20 lg:py-32"
-                    svgOptions={{
-                        delayMultiplier: 0.1, // Reduced from 0.2 for quicker spawning
-                        duration: 18, // Slightly faster animation
-                    }}
+                {/* Blurred spotlight at top (Gradienty-style) – soft purple glow; stays at top of page and scrolls away */}
+                <div className="relative">
+                    <div
+                        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[55vh] max-h-[520px]"
+                        aria-hidden
+                        style={{
+                            background:
+                                'radial-gradient(ellipse 80% 60% at 75% 0%, rgba(168, 85, 247, 0.24) 0%, rgba(216, 180, 254, 0.12) 40%, transparent 70%)',
+                        }}
+                    />
+                </div>
+                {/* Hero Section (combined with About Me) */}
+                <BackgroundBeamsWithCollision
+                    className="relative z-10 flex min-h-[70vh] flex-col items-center justify-center gap-8 px-6 py-20 lg:py-32"
                 >
                     <div className="mx-auto w-full max-w-4xl text-center">
-                        <div className="py-10 text-center lg:py-16">
-                            <EncryptedText
-                                text="Welcome to my site"
-                                className="text-4xl font-bold lg:text-6xl xl:text-7xl"
-                                encryptedClassName="text-neutral-500"
-                                revealedClassName="dark:text-white text-black"
-                                revealDelayMs={50}
-                            />
+                        {/* Profile, intro, and social links */}
+                        <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-10">
+                            <ScrollReveal direction="right" delay={0.2}>
+                                <div className="flex flex-col items-center gap-4">
+                                    <div className="h-48 w-48 flex-shrink-0 overflow-hidden rounded-full shadow-lg ring-4 ring-neutral-800 lg:h-56 lg:w-56">
+                                        <img
+                                            src="/profile.png"
+                                            alt="Profile"
+                                            className="h-full w-full object-cover"
+                                        />
+                                    </div>
+                                    <div className="flex items-center justify-center gap-3">
+                                        <a
+                                            href="https://github.com/Beefsupreme21"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900 text-neutral-400 grayscale transition-all hover:scale-110 hover:border-neutral-700 hover:bg-neutral-800 hover:grayscale-0 [&_svg]:h-4 [&_svg]:w-4"
+                                            aria-label="GitHub"
+                                        >
+                                            <GithubLogo />
+                                        </a>
+                                        <a
+                                            href="https://www.linkedin.com/in/cory-sanda-74769924a/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900 text-neutral-400 grayscale transition-all hover:scale-110 hover:border-neutral-700 hover:bg-neutral-800 hover:grayscale-0 [&_svg]:h-4 [&_svg]:w-4"
+                                            aria-label="LinkedIn"
+                                        >
+                                            <LinkedInLogo />
+                                        </a>
+                                        <a
+                                            href="mailto:beefsupreme21@hotmail.com"
+                                            className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900 text-neutral-400 grayscale transition-all hover:scale-110 hover:border-neutral-700 hover:bg-neutral-800 hover:grayscale-0 [&_svg]:h-4 [&_svg]:w-4"
+                                            aria-label="Email"
+                                        >
+                                            <EmailIcon />
+                                        </a>
+                                    </div>
+                                </div>
+                            </ScrollReveal>
+                            <ScrollReveal direction="left" delay={0.3}>
+                                <div className="max-w-xl space-y-4 text-center text-lg leading-relaxed text-neutral-300 lg:text-left">
+                                    <p className="text-3xl font-bold lg:text-4xl">
+                                        <EncryptedText
+                                            text="Hey, I'm Cory."
+                                            className="inline"
+                                            encryptedClassName="text-neutral-500"
+                                            revealedClassName="text-white dark:text-white"
+                                            revealDelayMs={120}
+                                            flipDelayMs={80}
+                                        />
+                                    </p>
+                                    <p>
+                                        Welcome to my site! I&apos;m a Laravel developer who enjoys building things with the TALL stack:
+                                        Tailwind, Alpine, Laravel, and Livewire.
+                                    </p>
+                                    <p>
+                                        I use this site to share projects I&apos;ve built for fun and learning. Feel free to try them out
+                                        below!
+                                    </p>
+                                </div>
+                            </ScrollReveal>
                         </div>
-                        <div className="flex justify-center">
+
+                        {/* CTA – Aceternity NoiseBackground (animated gradients + noise) with our light purple → purple palette */}
+                        <div className="mt-12 flex justify-center">
                             <NoiseBackground
-                                containerClassName="w-fit p-2 rounded-full mx-auto"
+                                containerClassName="w-fit rounded-full p-[6px]"
                                 gradientColors={[
-                                    "rgb(255, 100, 150)",
-                                    "rgb(100, 150, 255)",
-                                    "rgb(255, 200, 100)",
+                                    "rgb(233, 213, 255)", // purple-200
+                                    "rgb(216, 180, 254)", // purple-300
+                                    "rgb(168, 85, 247)",  // purple-500
                                 ]}
+                                noiseIntensity={0.25}
+                                speed={0.12}
                             >
-                                <button className="h-full w-full cursor-pointer rounded-full bg-gradient-to-r from-neutral-100 via-neutral-100 to-white px-4 py-2 text-black shadow-[0px_2px_0px_0px_var(--color-neutral-50)_inset,0px_0.5px_1px_0px_var(--color-neutral-400)] transition-all duration-100 active:scale-98 dark:from-black dark:via-black dark:to-neutral-900 dark:text-white dark:shadow-[0px_1px_0px_0px_var(--color-neutral-950)_inset,0px_1px_0px_0px_var(--color-neutral-800)]">
+                                <Link
+                                    href="#projects"
+                                    className="block h-full w-full rounded-full bg-[#0a0a0a] px-6 py-3 text-center font-medium text-white transition-all duration-100 hover:bg-neutral-900/90 hover:text-purple-200 active:scale-[0.98]"
+                                >
                                     See Projects
-                                </button>
+                                </Link>
                             </NoiseBackground>
                         </div>
                     </div>
-                </BackgroundLines>
-
-                {/* About Me Section (card) */}
-                <section className="relative border-t border-neutral-900 bg-[#0a0a0a] px-6 py-20 dark:border-neutral-900 dark:bg-[#0a0a0a] lg:py-32">
-                    {/* Laravel Reverb style gradient - radial gradients at top/bottom with subtle linear overlay */}
-                    <div className="absolute inset-0 bg-gradient-section pointer-events-none" />
-                    {/* Subtle top border gradient */}
-                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neutral-800/60 to-transparent" />
-                    <div className="relative mx-auto max-w-5xl z-10">
-                        <div className="rounded-3xl border border-neutral-800/80 bg-neutral-900/70 px-6 py-10 shadow-[0_0_60px_rgba(0,0,0,0.7)] backdrop-blur-sm md:px-10 md:py-12">
-                            <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:gap-8">
-                                <ScrollReveal direction="right" delay={0.2}>
-                                    <div className="flex-shrink-0">
-                                        <div className="h-56 w-56 overflow-hidden rounded-full shadow-lg ring-4 ring-neutral-800 lg:h-64 lg:w-64">
-                                            <img
-                                                src="/profile.png"
-                                                alt="Profile"
-                                                className="h-full w-full object-cover"
-                                            />
-                                        </div>
-                                    </div>
-                                </ScrollReveal>
-                                <ScrollReveal direction="left" delay={0.3}>
-                                    <div className="flex-1 space-y-5 text-center text-lg leading-relaxed text-neutral-300 lg:text-left">
-                                        <p className="text-xl font-semibold text-white">
-                                            Hey, I&apos;m Cory.
-                                        </p>
-                                        <p>
-                                            Welcome to my site! I&apos;m a Laravel developer who enjoys building things with the TALL stack:
-                                            Tailwind, Alpine, Laravel, and Livewire.
-                                        </p>
-                                        <p>
-                                            I use this site to share projects I've built for fun and learning. Feel free to try them out
-                                            below!
-                                        </p>
-                                        <div className="flex items-center justify-center gap-4 lg:justify-start">
-                                            <a
-                                                href="https://github.com/yourusername"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900 text-neutral-300 transition-all hover:scale-110 hover:border-neutral-700 hover:bg-neutral-800"
-                                                aria-label="GitHub"
-                                            >
-                                                <GithubLogo />
-                                            </a>
-                                            <a
-                                                href="https://linkedin.com/in/yourusername"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-800 bg-neutral-900 text-[#0077b5] transition-all hover:scale-110 hover:border-neutral-700 hover:bg-neutral-800"
-                                                aria-label="LinkedIn"
-                                            >
-                                                <LinkedInLogo />
-                                            </a>
-                                        </div>
-                                    </div>
-                                </ScrollReveal>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                </BackgroundBeamsWithCollision>
 
                 {/* Skills/Tools Section */}
                 <section className="relative border-t border-neutral-900 bg-[#0a0a0a] px-6 py-20 dark:border-neutral-900 dark:bg-[#0a0a0a] lg:py-32">
-                    {/* Laravel Reverb style gradient - radial gradients at top/bottom with subtle linear overlay */}
-                    <div className="absolute inset-0 bg-gradient-section pointer-events-none" />
-                    {/* Subtle top border gradient */}
-                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neutral-800/60 to-transparent" />
                     <div className="relative mx-auto max-w-6xl z-10">
                         <ScrollReveal direction="up" delay={0.1}>
                             <h2 className="mb-12 text-center text-3xl font-bold text-white lg:text-4xl">
@@ -148,11 +154,7 @@ export default function Welcome() {
                 </section>
 
                 {/* Projects Section (card) */}
-                <section className="relative border-t border-neutral-900 bg-[#0a0a0a] px-6 py-20 dark:border-neutral-900 dark:bg-[#0a0a0a] lg:py-32">
-                    {/* Laravel Reverb style gradient - radial gradients at top/bottom with subtle linear overlay */}
-                    <div className="absolute inset-0 bg-gradient-section pointer-events-none" />
-                    {/* Subtle top border gradient */}
-                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neutral-800/60 to-transparent" />
+                <section id="projects" className="relative border-t border-neutral-900 bg-[#0a0a0a] px-6 py-20 dark:border-neutral-900 dark:bg-[#0a0a0a] lg:py-32">
                     <div className="relative mx-auto max-w-6xl z-10">
                         <div className="rounded-3xl border border-neutral-800/80 bg-neutral-900/70 px-6 py-10 shadow-[0_0_60px_rgba(0,0,0,0.7)] backdrop-blur-sm md:px-10 md:py-12">
                             <ScrollReveal direction="up" delay={0.1}>
@@ -189,19 +191,153 @@ export default function Welcome() {
                                     >
                                         <Link
                                             href={`/projects/${project.id}`}
-                                            className="group block h-full rounded-2xl border border-neutral-800 bg-neutral-900 p-6 shadow-lg transition-all hover:scale-[1.03] hover:border-neutral-700 hover:shadow-xl"
+                                            className="group block h-full overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 shadow-lg transition-all hover:scale-[1.03] hover:border-neutral-700 hover:shadow-xl"
                                         >
-                                            <h3 className="mb-2 text-xl font-semibold text-white transition-colors group-hover:text-neutral-300">
-                                                {project.title}
-                                            </h3>
-                                            <p className="text-neutral-400">
-                                                {project.description}
-                                            </p>
+                                            <div className="aspect-video w-full bg-neutral-800 flex items-center justify-center">
+                                                <span className="text-sm text-neutral-500">Image</span>
+                                            </div>
+                                            <div className="p-6">
+                                                <h3 className="mb-2 text-xl font-semibold text-white transition-colors group-hover:text-neutral-300">
+                                                    {project.title}
+                                                </h3>
+                                                <p className="text-neutral-400">
+                                                    {project.description}
+                                                </p>
+                                            </div>
                                         </Link>
                                     </ScrollReveal>
                                 ))}
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                {/* Timeline Section – 2022–2026 (Aceternity demo style) */}
+                <section className="relative border-t border-neutral-900 bg-[#0a0a0a] px-6 py-20 dark:bg-[#0a0a0a] lg:py-32">
+                    <div className="relative mx-auto max-w-3xl z-10">
+                        <Timeline
+                            title="Changelog from my journey"
+                            subtitle="2022 – 2026. Here's a timeline of what I've been up to."
+                            data={[
+                                {
+                                    title: '2026',
+                                    content: (
+                                        <div>
+                                            <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
+                                                Placeholder for 2026. Add your own copy and images here.
+                                            </p>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                {[1, 2, 3, 4].map((i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="flex h-20 w-full items-center justify-center rounded-lg bg-neutral-800 text-xs text-neutral-500 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60"
+                                                    >
+                                                        Image
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ),
+                                },
+                                {
+                                    title: '2025',
+                                    content: (
+                                        <div>
+                                            <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
+                                                Placeholder for 2025. Add your own copy and images here.
+                                            </p>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                {[1, 2, 3, 4].map((i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="flex h-20 w-full items-center justify-center rounded-lg bg-neutral-800 text-xs text-neutral-500 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60"
+                                                    >
+                                                        Image
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ),
+                                },
+                                {
+                                    title: '2024',
+                                    content: (
+                                        <div>
+                                            <p className="mb-4 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
+                                                Deployed a few things this year. Placeholder checklist below.
+                                            </p>
+                                            <div className="mb-8">
+                                                <div className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300">
+                                                    ✅ Item one
+                                                </div>
+                                                <div className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300">
+                                                    ✅ Item two
+                                                </div>
+                                                <div className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300">
+                                                    ✅ Item three
+                                                </div>
+                                                <div className="flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300">
+                                                    ✅ Item four
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                {[1, 2, 3, 4].map((i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="flex h-20 w-full items-center justify-center rounded-lg bg-neutral-800 text-xs text-neutral-500 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60"
+                                                    >
+                                                        Image
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ),
+                                },
+                                {
+                                    title: '2023',
+                                    content: (
+                                        <div>
+                                            <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
+                                                Placeholder for 2023. When you see content this big, you can add more paragraphs and a grid of images.
+                                            </p>
+                                            <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
+                                                Replace this with your own milestones and project screenshots.
+                                            </p>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                {[1, 2, 3, 4].map((i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="flex h-20 w-full items-center justify-center rounded-lg bg-neutral-800 text-xs text-neutral-500 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60"
+                                                    >
+                                                        Image
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ),
+                                },
+                                {
+                                    title: '2022',
+                                    content: (
+                                        <div>
+                                            <p className="mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
+                                                Placeholder for 2022. Add your own copy and images here.
+                                            </p>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                {[1, 2, 3, 4].map((i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="flex h-20 w-full items-center justify-center rounded-lg bg-neutral-800 text-xs text-neutral-500 shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60"
+                                                    >
+                                                        Image
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ),
+                                },
+                            ]}
+                        />
                     </div>
                 </section>
             </div>
