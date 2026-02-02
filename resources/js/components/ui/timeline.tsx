@@ -39,18 +39,14 @@ export const Timeline = ({
   });
 
   const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);
-  const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
     <div
       ref={containerRef}
       className={cn("relative w-full overflow-clip", className)}
     >
-      {/* Sticky main header – matches Aceternity */}
-      <motion.div
-        style={{ opacity: opacityTransform }}
-        className="sticky top-0 z-20 mb-10 px-0"
-      >
+      {/* Static header – visible by default, scrolls away with page (no overlap) */}
+      <div className="mb-10 px-0">
         <h2 className="text-3xl font-bold text-neutral-900 dark:text-white md:text-4xl">
           {title}
         </h2>
@@ -59,13 +55,13 @@ export const Timeline = ({
             {subtitle}
           </p>
         )}
-      </motion.div>
+      </div>
 
       {/* Two-column layout: left = line + sticky titles, right = content */}
       <div ref={ref} className="relative grid grid-cols-[auto_1fr] gap-x-6 md:gap-x-10">
-        {/* Vertical line – scroll-driven height */}
+        {/* Vertical line – scroll-driven height, site purple gradient (light purple → purple) */}
         <motion.div
-          className="absolute left-[11px] top-0 w-px bg-neutral-300 dark:bg-neutral-600 md:left-[15px]"
+          className="absolute left-[11px] top-0 w-px bg-gradient-to-b from-[rgb(233,213,255)] to-[rgb(168,85,247)] md:left-[15px]"
           style={{ height: heightTransform }}
         />
 

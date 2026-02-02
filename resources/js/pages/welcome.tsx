@@ -2,7 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import { EncryptedText } from '@/components/ui/encrypted-text';
 import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
 import { NoiseBackground } from '@/components/ui/noise-background';
-import { SkillsCarousel } from '@/components/ui/skills-carousel';
+import { SkillsList } from '@/components/ui/skills-list';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import { Timeline } from '@/components/ui/timeline';
 import {
@@ -24,20 +24,9 @@ export default function Welcome() {
         <>
             <Head title="Welcome" />
             <div className="min-h-screen bg-[#FDFDFC] dark:bg-[#0a0a0a]">
-                {/* Blurred spotlight at top (Gradienty-style) – soft purple glow; stays at top of page and scrolls away */}
-                <div className="relative">
-                    <div
-                        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[55vh] max-h-[520px]"
-                        aria-hidden
-                        style={{
-                            background:
-                                'radial-gradient(ellipse 80% 60% at 75% 0%, rgba(168, 85, 247, 0.24) 0%, rgba(216, 180, 254, 0.12) 40%, transparent 70%)',
-                        }}
-                    />
-                </div>
                 {/* Hero Section (combined with About Me) */}
                 <BackgroundBeamsWithCollision
-                    className="relative z-10 flex min-h-[70vh] flex-col items-center justify-center gap-8 px-6 py-20 lg:py-32"
+                    className="flex min-h-[70vh] flex-col items-center justify-center gap-8 px-6 py-20 lg:py-32"
                 >
                     <div className="mx-auto w-full max-w-4xl text-center">
                         {/* Profile, intro, and social links */}
@@ -127,8 +116,16 @@ export default function Welcome() {
                     </div>
                 </BackgroundBeamsWithCollision>
 
-                {/* Skills/Tools Section */}
+                {/* Skills/Tools Section – purple tint overlay */}
                 <section className="relative border-t border-neutral-900 bg-[#0a0a0a] px-6 py-20 dark:border-neutral-900 dark:bg-[#0a0a0a] lg:py-32">
+                    <div
+                        className="pointer-events-none absolute inset-0 z-0"
+                        aria-hidden
+                        style={{
+                            background:
+                                'radial-gradient(ellipse 90% 70% at 50% 50%, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0.08) 50%, transparent 85%)',
+                        }}
+                    />
                     <div className="relative mx-auto max-w-6xl z-10">
                         <ScrollReveal direction="up" delay={0.1}>
                             <h2 className="mb-12 text-center text-3xl font-bold text-white lg:text-4xl">
@@ -136,15 +133,15 @@ export default function Welcome() {
                             </h2>
                         </ScrollReveal>
                         <ScrollReveal direction="up" delay={0.2}>
-                            <SkillsCarousel
+                            <SkillsList
                                 skills={[
                                     { name: "React", logo: <ReactLogo /> },
+                                    { name: "Vue", logo: <VueLogo /> },
                                     { name: "Laravel", logo: <LaravelLogo /> },
-                                    { name: "Alpine.js", logo: <AlpineLogo /> },
-                                    { name: "Tailwind CSS", logo: <TailwindLogo /> },
-                                    { name: "Vue.js", logo: <VueLogo /> },
-                                    { name: "Livewire", logo: <LivewireLogo /> },
+                                    { name: "Tailwind", logo: <TailwindLogo /> },
                                     { name: "CSS", logo: <CssLogo /> },
+                                    { name: "Alpine.js", logo: <AlpineLogo /> },
+                                    { name: "Livewire", logo: <LivewireLogo /> },
                                     { name: "SQL", logo: <SqlLogo /> },
                                     { name: "GitHub", logo: <GithubLogo /> },
                                 ]}
