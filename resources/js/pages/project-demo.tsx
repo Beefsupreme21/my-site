@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ThreeJSGameDemo } from '@/components/demos/threejs-game';
 import { SimpleDemo } from '@/components/demos/simple-demo';
+import { KanbanDemo } from '@/components/demos/kanban';
 
 interface ProjectDemoProps {
     project: {
@@ -15,6 +16,7 @@ interface ProjectDemoProps {
 const demoComponents: Record<string, React.ComponentType> = {
     'threejs-game': ThreeJSGameDemo,
     'simple-demo': SimpleDemo,
+    kanban: KanbanDemo,
 };
 
 export default function ProjectDemo({ project }: ProjectDemoProps) {

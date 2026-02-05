@@ -11,9 +11,9 @@ Route::get('/projects/{id}', function (int $id) {
     $projects = [
         1 => [
             'id' => 1,
-            'title' => 'Wordle',
-            'description' => 'A word guessing game built with React. Guess the word in 6 tries!',
-            'demoComponent' => 'simple-demo', // Component name in components/demos/
+            'title' => 'Kanban',
+            'description' => 'A simple Kanban board. Add tasks and drag them between columns. No persistence.',
+            'demoComponent' => 'kanban',
         ],
         2 => [
             'id' => 2,

@@ -163,9 +163,9 @@ export default function Welcome() {
                                 {[
                                     {
                                         id: 1,
-                                        title: "Wordle",
+                                        title: "Kanban",
                                         description:
-                                            "A word guessing game built with React. Guess the word in 6 tries!",
+                                            "A simple Kanban board. Add tasks and drag them between columns.",
                                     },
                                     {
                                         id: 2,
