@@ -23,9 +23,9 @@ Route::get('/projects/{id}', function (int $id) {
         ],
         3 => [
             'id' => 3,
-            'title' => 'Memory Game',
-            'description' => 'A card matching memory game. Test your memory by finding matching pairs!',
-            'demoComponent' => 'simple-demo', // Component name in components/demos/
+            'title' => 'Wordle',
+            'description' => 'Guess the 5-letter word in 6 tries. Green = right spot, yellow = wrong spot.',
+            'demoComponent' => 'wordle',
         ],
     ];
 

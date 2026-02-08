@@ -27,11 +27,24 @@ const INITIAL_COLUMNS: Column[] = [
 
 const INITIAL_CARDS: Record<string, Card[]> = {
   todo: [
-    { id: '1', text: 'Sample task' },
-    { id: '2', text: 'Another item' },
+    { id: '1', text: 'Review pull requests' },
+    { id: '2', text: 'Update documentation' },
+    { id: '3', text: 'Plan sprint' },
   ],
-  'in-progress': [],
-  done: [],
+  'in-progress': [
+    { id: '4', text: 'Fix login bug' },
+    { id: '5', text: 'Design dashboard' },
+  ],
+  done: [
+    { id: '6', text: 'Deploy to staging' },
+    { id: '7', text: 'Write tests' },
+  ],
+};
+
+const COLUMN_ACCENT: Record<string, string> = {
+  todo: 'border-t-amber-500/70',
+  'in-progress': 'border-t-purple-500/70',
+  done: 'border-t-emerald-500/70',
 };
 
 export function KanbanDemo() {
@@ -155,8 +168,8 @@ export function KanbanDemo() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col p-8 pt-16">
-      <header className="mb-6">
+    <div className="flex min-h-screen flex-col bg-neutral-950 p-6 pt-12 md:p-8 md:pt-16">
+      <header className="mb-8">
         <LampContainer className="py-6 md:py-8">
           <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
             Kanban
@@ -166,12 +179,14 @@ export function KanbanDemo() {
           </p>
         </LampContainer>
       </header>
-      <div className="flex flex-1 gap-4 overflow-x-auto pb-4">
+      <div className="flex flex-1 gap-5 overflow-x-auto pb-4">
         {columns.map((col) => (
           <div
             key={col.id}
             className={cn(
-              'flex min-w-[260px] max-w-[260px] flex-shrink-0 flex-col rounded-lg border-2 border-neutral-700 bg-neutral-900/60 p-3 transition-colors',
+              'flex min-w-[272px] max-w-[272px] flex-shrink-0 flex-col rounded-xl border border-neutral-700/80 bg-neutral-900/80 p-4 shadow-lg transition-colors',
+              'border-t-4',
+              COLUMN_ACCENT[col.id] ?? 'border-t-neutral-600',
               draggedCard && 'border-neutral-600',
             )}
             onDragOver={handleDragOver}
@@ -199,7 +214,7 @@ export function KanbanDemo() {
                 <button
                   type="button"
                   onClick={() => startEditingColumn(col)}
-                  className="min-w-0 flex-1 truncate text-left text-sm font-semibold text-neutral-300 hover:text-white"
+                  className="min-w-0 flex-1 truncate text-left text-sm font-semibold uppercase tracking-wide text-neutral-200 hover:text-white"
                 >
                   {col.title}
                 </button>
@@ -273,7 +288,7 @@ export function KanbanDemo() {
                       onDragStart={() => handleDragStart(card, col.id)}
                       onDragEnd={handleDragEnd}
                       className={cn(
-                        'group flex cursor-grab items-start justify-between gap-2 rounded-md border border-neutral-700 bg-neutral-800 px-3 py-2 text-sm text-white shadow-sm transition-colors hover:bg-neutral-700 active:cursor-grabbing',
+                        'group flex cursor-grab items-start justify-between gap-2 rounded-lg border border-neutral-700/80 bg-neutral-800/90 px-3.5 py-2.5 text-sm text-neutral-100 shadow-md transition-all hover:border-neutral-600 hover:bg-neutral-700/90 active:cursor-grabbing',
                         draggedCard?.card.id === card.id && 'opacity-50',
                       )}
                     >
@@ -349,7 +364,7 @@ export function KanbanDemo() {
                     setNewCardText('');
                     setAddingCardColumnId(col.id);
                   }}
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-neutral-300"
+                  className="flex w-full items-center gap-2 rounded-lg border border-dashed border-neutral-600/80 px-3 py-2.5 text-left text-sm text-neutral-500 transition-colors hover:border-neutral-500 hover:bg-neutral-800/50 hover:text-neutral-300"
                 >
                   <span className="text-lg leading-none">+</span>
                   Add a card
@@ -413,7 +428,7 @@ export function KanbanDemo() {
             <button
               type="button"
               onClick={() => setAddingList(true)}
-              className="flex min-h-[80px] w-full items-center gap-2 rounded-lg border-2 border-dashed border-neutral-700 bg-neutral-900/40 px-4 py-3 text-left text-sm text-neutral-400 transition-colors hover:border-neutral-600 hover:bg-neutral-800/50 hover:text-neutral-300"
+              className="flex min-h-[100px] w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-neutral-700 bg-neutral-900/50 px-4 py-4 text-sm text-neutral-500 transition-colors hover:border-neutral-600 hover:bg-neutral-800/60 hover:text-neutral-300"
             >
               <span className="text-lg leading-none">+</span>
               Add another list

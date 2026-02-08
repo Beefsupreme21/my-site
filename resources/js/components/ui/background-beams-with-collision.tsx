@@ -132,7 +132,7 @@ const CollisionMechanism = ({
         key={beamKey}
         ref={beamRef}
         className={cn(
-          "absolute left-0 top-0 w-1 rounded-full bg-gradient-to-b from-white/70 to-purple-500/80",
+          "absolute left-0 top-0 w-1 rounded-full bg-gradient-to-b from-white/45 to-purple-500/50",
           className ?? "h-10"
         )}
         style={{

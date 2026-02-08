@@ -21,6 +21,16 @@ export default function Music() {
         }
     }, [isGameStarted, isGameOver]);
 
+    // Stop music when leaving the page (e.g. back to app or different project)
+    useEffect(() => {
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
+        };
+    }, []);
+
     // Update volume based on context and game state
     useEffect(() => {
         if (audioRef.current) {

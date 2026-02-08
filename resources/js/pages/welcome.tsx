@@ -2,6 +2,8 @@ import { Head, Link } from '@inertiajs/react';
 import { EncryptedText } from '@/components/ui/encrypted-text';
 import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
 import { NoiseBackground } from '@/components/ui/noise-background';
+import { DottedGlowBackground } from '@/components/ui/dotted-glow-background';
+import { GlowingEffect } from '@/components/ui/glowing-effect';
 import { SkillsList } from '@/components/ui/skills-list';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import { Timeline } from '@/components/ui/timeline';
@@ -24,7 +26,8 @@ export default function Welcome() {
         <>
             <Head title="Welcome" />
             <div className="min-h-screen bg-[#FDFDFC] dark:bg-[#0a0a0a]">
-                {/* Hero Section (combined with About Me) */}
+                <main className="flex flex-col">
+                {/* Hero Section – Background Beams */}
                 <BackgroundBeamsWithCollision
                     className="flex min-h-[70vh] flex-col items-center justify-center gap-8 px-6 py-20 lg:py-32"
                 >
@@ -116,16 +119,14 @@ export default function Welcome() {
                     </div>
                 </BackgroundBeamsWithCollision>
 
-                {/* Skills/Tools Section – purple tint overlay */}
-                <section className="relative border-t border-neutral-900 bg-[#0a0a0a] px-6 py-20 dark:border-neutral-900 dark:bg-[#0a0a0a] lg:py-32">
-                    <div
-                        className="pointer-events-none absolute inset-0 z-0"
-                        aria-hidden
-                        style={{
-                            background:
-                                'radial-gradient(ellipse 90% 70% at 50% 50%, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0.08) 50%, transparent 85%)',
-                        }}
-                    />
+                {/* Skills/Tools – purple gradient centered, fades at top and bottom */}
+                <section
+                    className="relative bg-[#0a0a0a] px-6 py-16 lg:py-24"
+                    style={{
+                        background:
+                            "linear-gradient(180deg, #0a0a0a 0%, rgba(45, 27, 78, 0.25) 6%, #1e1025 35%, #1e1025 65%, rgba(45, 27, 78, 0.25) 94%, #0a0a0a 100%)",
+                    }}
+                >
                     <div className="relative mx-auto max-w-6xl z-10">
                         <ScrollReveal direction="up" delay={0.1}>
                             <h2 className="mb-12 text-center text-3xl font-bold text-white lg:text-4xl">
@@ -150,48 +151,83 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                {/* Projects Section (card) */}
-                <section id="projects" className="relative border-t border-neutral-900 bg-[#0a0a0a] px-6 py-20 dark:border-neutral-900 dark:bg-[#0a0a0a] lg:py-32">
+                {/* Projects – same BG and title style as Skills & Tools */}
+                <section id="projects" className="relative bg-[#0a0a0a] px-6 py-16 dark:bg-[#0a0a0a] lg:py-24">
+                    <DottedGlowBackground
+                        className="pointer-events-none z-0 mask-radial-to-90% mask-radial-at-center"
+                        opacity={1}
+                        gap={10}
+                        radius={1.6}
+                        color="rgba(168, 85, 247, 0.5)"
+                        glowColor="rgba(168, 85, 247, 0.85)"
+                        backgroundOpacity={0}
+                        speedMin={0.3}
+                        speedMax={1.6}
+                        speedScale={1}
+                    />
                     <div className="relative mx-auto max-w-6xl z-10">
-                        <div className="rounded-3xl border border-neutral-800/80 bg-neutral-900/70 px-6 py-10 shadow-[0_0_60px_rgba(0,0,0,0.7)] backdrop-blur-sm md:px-10 md:py-12">
-                            <ScrollReveal direction="up" delay={0.1}>
-                                <h2 className="mb-8 text-3xl font-bold text-white lg:mb-10 lg:text-4xl">
-                                    Projects
-                                </h2>
-                            </ScrollReveal>
-                            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                                {[
-                                    {
-                                        id: 1,
-                                        title: "Kanban",
-                                        description:
-                                            "A simple Kanban board. Add tasks and drag them between columns.",
-                                    },
-                                    {
-                                        id: 2,
-                                        title: "Racing Game",
-                                        description:
-                                            "An interactive 3D racing game built with Three.js and React Three Fiber.",
-                                    },
-                                    {
-                                        id: 3,
-                                        title: "Memory Game",
-                                        description:
-                                            "A card matching memory game. Test your memory by finding matching pairs!",
-                                    },
-                                ].map((project, index) => (
-                                    <ScrollReveal
-                                        key={project.id}
-                                        direction="up"
-                                        delay={0.2 + index * 0.1}
-                                        className="h-full"
-                                    >
+                        <ScrollReveal direction="up" delay={0.1}>
+                            <h2 className="mb-12 text-center text-3xl font-bold text-white lg:text-4xl">
+                                Projects
+                            </h2>
+                        </ScrollReveal>
+                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {[
+                                {
+                                    id: 1,
+                                    title: "Kanban",
+                                    description:
+                                        "A simple Kanban board. Add tasks and drag them between columns.",
+                                    image: "/images/kanban.png",
+                                },
+                                {
+                                    id: 2,
+                                    title: "Racing Game",
+                                    description:
+                                        "An interactive 3D racing game built with Three.js and React Three Fiber.",
+                                    image: "/images/racing-game.png",
+                                },
+                                {
+                                    id: 3,
+                                    title: "Wordle",
+                                    description:
+                                        "Guess the 5-letter word in 6 tries. Green = right spot, yellow = wrong spot.",
+                                    image: "/images/wordle.png",
+                                },
+                            ].map((project, index) => (
+                                <ScrollReveal
+                                    key={project.id}
+                                    direction="up"
+                                    delay={0.2 + index * 0.1}
+                                    className="h-full"
+                                >
+                                    <div className="relative h-full rounded-2xl border border-neutral-800 p-2 transition-all hover:scale-[1.03] md:rounded-3xl md:p-3">
+                                        <GlowingEffect
+                                            spread={40}
+                                            glow={false}
+                                            disabled={false}
+                                            proximity={64}
+                                            inactiveZone={0.01}
+                                            borderWidth={1}
+                                        />
                                         <Link
                                             href={`/projects/${project.id}`}
-                                            className="group block h-full overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 shadow-lg transition-all hover:scale-[1.03] hover:border-neutral-700 hover:shadow-xl"
+                                            className="group relative block h-full overflow-hidden rounded-xl bg-neutral-900 shadow-lg transition-shadow hover:shadow-xl"
                                         >
-                                            <div className="aspect-video w-full bg-neutral-800 flex items-center justify-center">
-                                                <span className="text-sm text-neutral-500">Image</span>
+                                            <div className="relative aspect-video w-full overflow-hidden bg-neutral-800">
+                                                <img
+                                                    src={project.image}
+                                                    alt={`${project.title} screenshot`}
+                                                    className="h-full w-full object-cover object-center"
+                                                    onError={(e) => {
+                                                        e.currentTarget.style.display = "none";
+                                                        const fallback = e.currentTarget.nextElementSibling;
+                                                        if (fallback) fallback.classList.remove("hidden");
+                                                    }}
+                                                />
+                                                <span className="absolute inset-0 hidden flex items-center justify-center text-sm text-neutral-500">
+                                                    Image
+                                                </span>
                                             </div>
                                             <div className="p-6">
                                                 <h3 className="mb-2 text-xl font-semibold text-white transition-colors group-hover:text-neutral-300">
@@ -202,15 +238,50 @@ export default function Welcome() {
                                                 </p>
                                             </div>
                                         </Link>
-                                    </ScrollReveal>
-                                ))}
-                            </div>
+                                    </div>
+                                </ScrollReveal>
+                            ))}
                         </div>
                     </div>
                 </section>
 
-                {/* Timeline Section – 2022–2026 (Aceternity demo style) */}
-                <section className="relative border-t border-neutral-900 bg-[#0a0a0a] px-6 py-20 dark:bg-[#0a0a0a] lg:py-32">
+                {/* Purple section below Projects – same gradient, add content later */}
+                <section
+                    id="more"
+                    className="relative bg-[#0a0a0a] px-6 py-16 lg:py-24"
+                    style={{
+                        background:
+                            "linear-gradient(180deg, #0a0a0a 0%, rgba(45, 27, 78, 0.25) 6%, #1e1025 35%, #1e1025 65%, rgba(45, 27, 78, 0.25) 94%, #0a0a0a 100%)",
+                    }}
+                >
+                    <div className="relative mx-auto max-w-6xl z-10">
+                        <ScrollReveal direction="up" delay={0.1}>
+                            <h2 className="mb-12 text-center text-3xl font-bold text-white lg:text-4xl">
+                                More
+                            </h2>
+                        </ScrollReveal>
+                        <ScrollReveal direction="up" delay={0.2}>
+                            <p className="text-center text-neutral-400">
+                                Add content here — e.g. testimonials, blog links, or another feature block.
+                            </p>
+                        </ScrollReveal>
+                    </div>
+                </section>
+
+                {/* Timeline Section – same dotted glow BG as Projects */}
+                <section className="relative bg-[#0a0a0a] px-6 py-16 dark:bg-[#0a0a0a] lg:py-24">
+                    <DottedGlowBackground
+                        className="pointer-events-none z-0 mask-radial-to-90% mask-radial-at-center"
+                        opacity={1}
+                        gap={10}
+                        radius={1.6}
+                        color="rgba(168, 85, 247, 0.5)"
+                        glowColor="rgba(168, 85, 247, 0.85)"
+                        backgroundOpacity={0}
+                        speedMin={0.3}
+                        speedMax={1.6}
+                        speedScale={1}
+                    />
                     <div className="relative mx-auto max-w-3xl z-10">
                         <Timeline
                             title="Changelog from my journey"
@@ -337,6 +408,7 @@ export default function Welcome() {
                         />
                     </div>
                 </section>
+                </main>
             </div>
         </>
     );
