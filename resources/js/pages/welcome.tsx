@@ -4,6 +4,7 @@ import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-w
 import { NoiseBackground } from '@/components/ui/noise-background';
 import { DottedGlowBackground } from '@/components/ui/dotted-glow-background';
 import { GlowingEffect } from '@/components/ui/glowing-effect';
+import { Separator } from '@/components/ui/separator';
 import { SkillsList } from '@/components/ui/skills-list';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import { Timeline } from '@/components/ui/timeline';
@@ -119,13 +120,11 @@ export default function Welcome() {
                     </div>
                 </BackgroundBeamsWithCollision>
 
-                {/* Skills/Tools – purple gradient centered, fades at top and bottom */}
+                <Separator className="bg-neutral-800" />
+                {/* Skills & Tools */}
                 <section
+                    id="skills"
                     className="relative bg-[#0a0a0a] px-6 py-16 lg:py-24"
-                    style={{
-                        background:
-                            "linear-gradient(180deg, #0a0a0a 0%, rgba(45, 27, 78, 0.25) 6%, #1e1025 35%, #1e1025 65%, rgba(45, 27, 78, 0.25) 94%, #0a0a0a 100%)",
-                    }}
                 >
                     <div className="relative mx-auto max-w-6xl z-10">
                         <ScrollReveal direction="up" delay={0.1}>
@@ -151,7 +150,8 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                {/* Projects – same BG and title style as Skills & Tools */}
+                <Separator className="bg-neutral-800" />
+                {/* Projects */}
                 <section id="projects" className="relative bg-[#0a0a0a] px-6 py-16 dark:bg-[#0a0a0a] lg:py-24">
                     <DottedGlowBackground
                         className="pointer-events-none z-0 mask-radial-to-90% mask-radial-at-center"
@@ -178,21 +178,21 @@ export default function Welcome() {
                                     title: "Kanban",
                                     description:
                                         "A simple Kanban board. Add tasks and drag them between columns.",
-                                    image: "/images/kanban.png",
+                                    image: "/images/wordle.png",
                                 },
                                 {
                                     id: 2,
                                     title: "Racing Game",
                                     description:
                                         "An interactive 3D racing game built with Three.js and React Three Fiber.",
-                                    image: "/images/racing-game.png",
+                                    image: "/images/kanban.png",
                                 },
                                 {
                                     id: 3,
                                     title: "Wordle",
                                     description:
                                         "Guess the 5-letter word in 6 tries. Green = right spot, yellow = wrong spot.",
-                                    image: "/images/wordle.png",
+                                    image: "/images/racing-game.png",
                                 },
                             ].map((project, index) => (
                                 <ScrollReveal
@@ -245,14 +245,11 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                {/* Purple section below Projects – same gradient, add content later */}
+                <Separator className="bg-neutral-800" />
+                {/* More – placeholder for future content */}
                 <section
                     id="more"
                     className="relative bg-[#0a0a0a] px-6 py-16 lg:py-24"
-                    style={{
-                        background:
-                            "linear-gradient(180deg, #0a0a0a 0%, rgba(45, 27, 78, 0.25) 6%, #1e1025 35%, #1e1025 65%, rgba(45, 27, 78, 0.25) 94%, #0a0a0a 100%)",
-                    }}
                 >
                     <div className="relative mx-auto max-w-6xl z-10">
                         <ScrollReveal direction="up" delay={0.1}>
@@ -268,7 +265,8 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                {/* Timeline Section – same dotted glow BG as Projects */}
+                <Separator className="bg-neutral-800" />
+                {/* Timeline */}
                 <section className="relative bg-[#0a0a0a] px-6 py-16 dark:bg-[#0a0a0a] lg:py-24">
                     <DottedGlowBackground
                         className="pointer-events-none z-0 mask-radial-to-90% mask-radial-at-center"
