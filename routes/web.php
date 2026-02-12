@@ -7,6 +7,10 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
+Route::get('/test', function () {
+    return Inertia::render('Test');
+})->name('test');
+
 Route::get('/projects/{id}', function (int $id) {
     $projects = [
         1 => [
