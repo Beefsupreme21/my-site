@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
     <head>
+        <script>
+            (function() {
+                var t = localStorage.getItem('theme');
+                if (t === 'dark') document.documentElement.classList.add('dark');
+                else if (t === 'light') document.documentElement.classList.remove('dark');
+                else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+                else document.documentElement.classList.remove('dark');
+            })();
+        </script>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
