@@ -3,6 +3,8 @@ import { ThreeJSGameDemo } from '@/components/demos/threejs-game';
 import { SimpleDemo } from '@/components/demos/simple-demo';
 import { KanbanDemo } from '@/components/demos/kanban';
 import { WordleDemo } from '@/components/demos/wordle';
+import { SnakeDemo } from '@/components/demos/snake';
+import { BreakoutDemo } from '@/components/demos/breakout';
 
 interface ProjectDemoProps {
     project: {
@@ -19,6 +21,8 @@ const demoComponents: Record<string, React.ComponentType> = {
     'simple-demo': SimpleDemo,
     kanban: KanbanDemo,
     wordle: WordleDemo,
+    snake: SnakeDemo,
+    breakout: BreakoutDemo,
 };
 
 export default function ProjectDemo({ project }: ProjectDemoProps) {

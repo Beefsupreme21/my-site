@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { EncryptedText } from '@/components/ui/encrypted-text';
 import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
@@ -22,7 +23,58 @@ import {
   EmailIcon,
 } from '@/components/logos';
 
+const PROJECTS = [
+    {
+        id: 1,
+        title: 'Kanban',
+        description:
+            'A simple Kanban board. Add tasks and drag them between columns.',
+        image: '/images/wordle.png',
+    },
+    {
+        id: 2,
+        title: 'Racing Game',
+        description:
+            'An interactive 3D racing game built with Three.js and React Three Fiber.',
+        image: '/images/kanban.png',
+    },
+    {
+        id: 3,
+        title: 'Wordle',
+        description:
+            'Guess the 5-letter word in 6 tries. Green = right spot, yellow = wrong spot.',
+        image: '/images/racing-game.png',
+    },
+    {
+        id: 4,
+        title: 'Snake',
+        description:
+            'Classic Snake. Use arrow keys to move, eat the yellow dots to grow. Don\'t hit the walls or yourself.',
+        image: '/images/kanban.png',
+    },
+    {
+        id: 5,
+        title: 'Breakout',
+        description:
+            'Classic block breaker. Move the paddle with mouse or arrow keys, press Space to launch. Break all bricks to win.',
+        image: '/images/wordle.png',
+    },
+    {
+        id: 6,
+        title: 'Project Six',
+        description:
+            'Another project demo. Replace with your own description and demo component.',
+        image: '/images/racing-game.png',
+    },
+];
+
+const INITIAL_PROJECTS_COUNT = 3;
+
 export default function Welcome() {
+    const [visibleCount, setVisibleCount] = useState(INITIAL_PROJECTS_COUNT);
+    const visibleProjects = PROJECTS.slice(0, visibleCount);
+    const hasMore = visibleCount < PROJECTS.length;
+
     return (
         <>
             <Head title="Welcome" />
@@ -172,29 +224,7 @@ export default function Welcome() {
                             </h2>
                         </ScrollReveal>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            {[
-                                {
-                                    id: 1,
-                                    title: "Kanban",
-                                    description:
-                                        "A simple Kanban board. Add tasks and drag them between columns.",
-                                    image: "/images/wordle.png",
-                                },
-                                {
-                                    id: 2,
-                                    title: "Racing Game",
-                                    description:
-                                        "An interactive 3D racing game built with Three.js and React Three Fiber.",
-                                    image: "/images/kanban.png",
-                                },
-                                {
-                                    id: 3,
-                                    title: "Wordle",
-                                    description:
-                                        "Guess the 5-letter word in 6 tries. Green = right spot, yellow = wrong spot.",
-                                    image: "/images/racing-game.png",
-                                },
-                            ].map((project, index) => (
+                            {visibleProjects.map((project, index) => (
                                 <ScrollReveal
                                     key={project.id}
                                     direction="up"
@@ -242,6 +272,23 @@ export default function Welcome() {
                                 </ScrollReveal>
                             ))}
                         </div>
+                        {hasMore && (
+                            <ScrollReveal direction="up" delay={0.2}>
+                                <div className="mt-10 flex justify-center">
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setVisibleCount((c) =>
+                                                Math.min(c + 3, PROJECTS.length),
+                                            )
+                                        }
+                                        className="rounded-full border border-neutral-700 bg-neutral-900 px-6 py-3 text-sm font-medium text-neutral-300 transition-colors hover:border-neutral-600 hover:bg-neutral-800 hover:text-white"
+                                    >
+                                        See more
+                                    </button>
+                                </div>
+                            </ScrollReveal>
+                        )}
                     </div>
                 </section>
 
