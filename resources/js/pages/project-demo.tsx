@@ -5,6 +5,7 @@ import { KanbanDemo } from '@/components/demos/kanban';
 import { WordleDemo } from '@/components/demos/wordle';
 import { SnakeDemo } from '@/components/demos/snake';
 import { BreakoutDemo } from '@/components/demos/breakout';
+import { BlackjackDemo } from '@/components/demos/blackjack';
 
 interface ProjectDemoProps {
     project: {
@@ -23,6 +24,7 @@ const demoComponents: Record<string, React.ComponentType> = {
     wordle: WordleDemo,
     snake: SnakeDemo,
     breakout: BreakoutDemo,
+    blackjack: BlackjackDemo,
 };
 
 export default function ProjectDemo({ project }: ProjectDemoProps) {

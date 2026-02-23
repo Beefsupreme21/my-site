@@ -65,9 +65,9 @@ const PROJECTS = [
     },
     {
         id: 6,
-        title: 'Project Six',
+        title: 'BlackJack',
         description:
-            'Another project demo. Replace with your own description and demo component.',
+            'Classic Blackjack. Get as close to 21 as you can without going over. Beat the dealer.',
         image: '/images/racing-game.png',
     },
 ];

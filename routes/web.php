@@ -45,9 +45,9 @@ Route::get('/projects/{id}', function (int $id) {
         ],
         6 => [
             'id' => 6,
-            'title' => 'Project Six',
-            'description' => 'Another project demo. Replace with your own description and demo component.',
-            'demoComponent' => 'simple-demo',
+            'title' => 'BlackJack',
+            'description' => 'Classic Blackjack. Get as close to 21 as you can without going over. Beat the dealer.',
+            'demoComponent' => 'blackjack',
         ],
     ];
 
