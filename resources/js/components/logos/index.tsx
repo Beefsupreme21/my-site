@@ -50,6 +50,32 @@ export const LivewireLogo = () => (
   </svg>
 );
 
+export const JsLogo = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+    <rect width="24" height="24" rx="4" fill="#F7DF1E" />
+    <text
+      x="12"
+      y="16.5"
+      textAnchor="middle"
+      fill="#000"
+      fontSize="11"
+      fontWeight="bold"
+      fontFamily="ui-sans-serif, system-ui, sans-serif"
+    >
+      JS
+    </text>
+  </svg>
+);
+
+export const HtmlLogo = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+    <path fill="#E34F26" d="M19.037 113.876L9.032 1.352h109.936l-10.016 112.524-45.019 12.48-44.922-12.48z" />
+    <path fill="#EF652A" d="M64 116.8l36.378-10.086 8.559-96.362H64v106.448z" />
+    <path fill="#EBEBEB" d="M64 52.455H37.541l.976 10.945H64v-10.945zm0 24.743H52.084l.488 5.472 1.953 21.93L64 104.9v11.015l-.018.005-17.539-4.84-1.209-13.58H31.322l2.333 26.134 19.363 5.246.004-.001V104.9z" />
+    <path fill="#fff" d="M63.977 52.455v10.945h17.994l-1.569 17.545H63.977v10.945h28.744l-.976 10.945-1.953 21.93-25.815 7.141v-11.015l11.233-3.037.976-10.945H63.977v-10.945h13.183l.976-10.945H63.977V52.455z" />
+  </svg>
+);
+
 export const CssLogo = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
     <path fill="#1572B6" d="M18.814 114.123L8.76 1.352h110.48l-10.064 112.754-45.243 12.543-45.119-12.526z" />
@@ -84,5 +110,13 @@ export const EmailIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect width="20" height="16" x="2" y="4" rx="2" />
     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </svg>
+);
+
+export const GlobeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+    <path d="M2 12h20" />
   </svg>
 );
