@@ -4,6 +4,59 @@ import { cn } from '@/lib/utils';
 const CARD_BACK_SRC =
     '/game-assets/blackjack/SteamPunk%20Card%20Deck/1-Card%20Sets/Steampunk%20Card_Back-Simple%20Border.png';
 
+const ASSETS = {
+    base: '/game-assets/blackjack/SteamPunk%20Card%20Deck/2-Individual%20Images',
+    other: '/game-assets/blackjack/SteamPunk%20Card%20Deck/2-Individual%20Images/3-Other',
+} as const;
+
+/** Card face background (no rank/suit). */
+const CARD_FACE_BG = `${ASSETS.other}/Front%20of%20Card%20Main%20Image.png`;
+
+const DESIGNATION_NAMES: Record<string, string> = {
+    A: 'Ace',
+    '2': 'Two',
+    '3': 'Three',
+    '4': 'Four',
+    '5': 'Five',
+    '6': 'Six',
+    '7': 'Seven',
+    '8': 'Eight',
+    '9': 'Nine',
+    '10': 'Ten',
+    J: 'Jack',
+    Q: 'Queen',
+    K: 'King',
+};
+
+const SUIT_NAMES: Record<string, string> = {
+    s: 'Spade',
+    h: 'Heart',
+    d: 'Diamond',
+    c: 'Club',
+};
+
+/** Rank-only image for corners (1-Designations). */
+function getDesignationSrc(cardId: string): string {
+    const rank = cardId.slice(0, -1);
+    const name = DESIGNATION_NAMES[rank];
+    return `${ASSETS.base}/1-Designations/${name}.png`;
+}
+
+/** Center art image (2-Symbols): rank+suit. Asset has typo: Seven HEart.png */
+function getSymbolSrc(cardId: string): string {
+    const rank = cardId.slice(0, -1);
+    const suit = cardId.slice(-1);
+    const rankName = DESIGNATION_NAMES[rank];
+    const suitName = SUIT_NAMES[suit];
+    const filename =
+        rank === 'J' || rank === 'Q' || rank === 'K'
+            ? `${rankName} Image.png`
+            : rank === '7' && suit === 'h'
+              ? 'Seven HEart.png'
+              : `${rankName} ${suitName}.png`;
+    return `${ASSETS.base}/2-Symbols/${encodeURIComponent(filename)}`;
+}
+
 const CHIPS_BASE =
     '/game-assets/blackjack/SteamPunk%20Card%20Deck/2-Individual%20Images/3-Other';
 
@@ -220,6 +273,27 @@ export function BlackjackDemo() {
                 className="relative w-full max-w-2xl rounded-3xl p-6"
                 style={{ minHeight: '380px' }}
             >
+                {/* Deck: stacked card backs, neat stack (deal from here) */}
+                <div className="absolute left-0 top-6 h-[9.5rem] w-[6.75rem]">
+                    {[0, 1, 2, 3, 4, 5].map((i) => (
+                        <div
+                            key={i}
+                            className="absolute h-[8.75rem] w-[6.25rem] overflow-hidden rounded-lg border border-amber-800/50 bg-neutral-900 shadow"
+                            style={{
+                                left: i * 1.5,
+                                top: i * 1.5,
+                                transform: 'rotate(-2deg)',
+                            }}
+                        >
+                            <img
+                                src={CARD_BACK_SRC}
+                                alt=""
+                                className="h-full w-full object-cover object-top"
+                            />
+                        </div>
+                    ))}
+                </div>
+
                 {/* Dealer area */}
                 <div className="mb-6 min-h-[120px] rounded-xl border-2 border-amber-100/80 bg-black/20 p-4">
                     <p className="mb-2 text-center text-sm font-medium text-amber-100/90">
@@ -228,51 +302,40 @@ export function BlackjackDemo() {
                             <span className="ml-2 text-white">({dealerTotal})</span>
                         )}
                     </p>
-                    <div className="flex min-h-[7rem] flex-wrap justify-center gap-3">
+                    <div className="flex min-h-[9rem] flex-wrap justify-center gap-3">
                         {dealerHand.map((card, i) => (
                             <div
                                 key={`d-${card.id}-${i}`}
-                                className="h-28 w-20 shrink-0 overflow-hidden rounded-lg border border-amber-800/50 bg-neutral-900 shadow-lg [perspective:200px] animate-blackjack-slide"
-                                style={{ transformStyle: 'preserve-3d' }}
+                                className="relative h-[8.75rem] w-[6.25rem] shrink-0 overflow-hidden rounded-lg border border-amber-800/50 bg-neutral-900 shadow-lg"
                             >
                                 {card.faceUp ? (
                                     <div
-                                        className="relative h-full w-full animate-blackjack-flip"
-                                        style={{
-                                            transformStyle: 'preserve-3d',
-                                        }}
+                                        className="relative h-full w-full"
+                                        role="img"
+                                        aria-label={cardLabel(card.id)}
                                     >
-                                        <div
-                                            className="absolute inset-0"
-                                            style={{
-                                                backfaceVisibility: 'hidden',
-                                                transform: 'rotateY(0deg)',
-                                            }}
-                                        >
-                                            <img
-                                                src={CARD_BACK_SRC}
-                                                alt=""
-                                                className="h-full w-full object-cover object-top"
-                                            />
-                                        </div>
-                                        <div
-                                            className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-amber-50 text-lg font-bold text-neutral-900"
-                                            style={{
-                                                backfaceVisibility: 'hidden',
-                                                transform: 'rotateY(180deg)',
-                                            }}
-                                        >
-                                            {cardLabel(card.id)}
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="h-full w-full">
                                         <img
-                                            src={CARD_BACK_SRC}
+                                            src={CARD_FACE_BG}
                                             alt=""
-                                            className="h-full w-full object-cover object-top"
+                                            className="absolute inset-0 z-0 h-full w-full object-cover"
+                                        />
+                                        <img
+                                            src={getSymbolSrc(card.id)}
+                                            alt=""
+                                            className="absolute inset-0 z-[1] h-full w-full object-contain p-2"
+                                        />
+                                        <img
+                                            src={getDesignationSrc(card.id)}
+                                            alt=""
+                                            className="absolute left-0 top-0 z-[2] h-[36%] w-auto max-w-[48%] object-contain object-left-top"
                                         />
                                     </div>
+                                ) : (
+                                    <img
+                                        src={CARD_BACK_SRC}
+                                        alt=""
+                                        className="h-full w-full object-cover object-top"
+                                    />
                                 )}
                             </div>
                         ))}
@@ -303,51 +366,40 @@ export function BlackjackDemo() {
                             <span className="ml-2 text-white">({playerTotal})</span>
                         )}
                     </p>
-                    <div className="flex min-h-[7rem] flex-wrap justify-center gap-3">
+                    <div className="flex min-h-[9rem] flex-wrap justify-center gap-3">
                         {playerHand.map((card, i) => (
                             <div
                                 key={`p-${card.id}-${i}`}
-                                className="h-28 w-20 shrink-0 overflow-hidden rounded-lg border border-amber-800/50 bg-neutral-900 shadow-lg [perspective:200px] animate-blackjack-slide"
-                                style={{ transformStyle: 'preserve-3d' }}
+                                className="relative h-[8.75rem] w-[6.25rem] shrink-0 overflow-hidden rounded-lg border border-amber-800/50 bg-neutral-900 shadow-lg"
                             >
                                 {card.faceUp ? (
                                     <div
-                                        className="relative h-full w-full animate-blackjack-flip"
-                                        style={{
-                                            transformStyle: 'preserve-3d',
-                                        }}
+                                        className="relative h-full w-full"
+                                        role="img"
+                                        aria-label={cardLabel(card.id)}
                                     >
-                                        <div
-                                            className="absolute inset-0"
-                                            style={{
-                                                backfaceVisibility: 'hidden',
-                                                transform: 'rotateY(0deg)',
-                                            }}
-                                        >
-                                            <img
-                                                src={CARD_BACK_SRC}
-                                                alt=""
-                                                className="h-full w-full object-cover object-top"
-                                            />
-                                        </div>
-                                        <div
-                                            className="absolute inset-0 flex flex-col items-center justify-center rounded-lg bg-amber-50 text-lg font-bold text-neutral-900"
-                                            style={{
-                                                backfaceVisibility: 'hidden',
-                                                transform: 'rotateY(180deg)',
-                                            }}
-                                        >
-                                            {cardLabel(card.id)}
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="h-full w-full">
                                         <img
-                                            src={CARD_BACK_SRC}
+                                            src={CARD_FACE_BG}
                                             alt=""
-                                            className="h-full w-full object-cover object-top"
+                                            className="absolute inset-0 z-0 h-full w-full object-cover"
+                                        />
+                                        <img
+                                            src={getSymbolSrc(card.id)}
+                                            alt=""
+                                            className="absolute inset-0 z-[1] h-full w-full object-contain p-2"
+                                        />
+                                        <img
+                                            src={getDesignationSrc(card.id)}
+                                            alt=""
+                                            className="absolute left-0 top-0 z-[2] h-[36%] w-auto max-w-[48%] object-contain object-left-top"
                                         />
                                     </div>
+                                ) : (
+                                    <img
+                                        src={CARD_BACK_SRC}
+                                        alt=""
+                                        className="h-full w-full object-cover object-top"
+                                    />
                                 )}
                             </div>
                         ))}

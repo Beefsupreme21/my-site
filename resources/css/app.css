@@ -70,36 +70,6 @@
     animation: deal-card 0.3s ease-out both;
 }
 
-/* Blackjack: card slides up into place */
-@keyframes blackjack-card-slide {
-    0% {
-        opacity: 0;
-        transform: translateY(32px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-blackjack-slide {
-    animation: blackjack-card-slide 0.35s ease-out both;
-}
-
-/* Blackjack: flip from back to front (use on .card-flip-inner) */
-@keyframes blackjack-card-flip {
-    0% {
-        transform: rotateY(0deg);
-    }
-    100% {
-        transform: rotateY(180deg);
-    }
-}
-
-.animate-blackjack-flip {
-    animation: blackjack-card-flip 0.4s ease-in-out 0.35s both;
-}
-
 /* Gradient overlay for section texture - Laravel Reverb style */
 .bg-gradient-section {
     background: 

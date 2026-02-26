@@ -4,7 +4,6 @@ import { SimpleDemo } from '@/components/demos/simple-demo';
 import { KanbanDemo } from '@/components/demos/kanban';
 import { WordleDemo } from '@/components/demos/wordle';
 import { SnakeDemo } from '@/components/demos/snake';
-import { BreakoutDemo } from '@/components/demos/breakout';
 import { BlackjackDemo } from '@/components/demos/blackjack';
 
 interface ProjectDemoProps {
@@ -23,7 +22,6 @@ const demoComponents: Record<string, React.ComponentType> = {
     kanban: KanbanDemo,
     wordle: WordleDemo,
     snake: SnakeDemo,
-    breakout: BreakoutDemo,
     blackjack: BlackjackDemo,
 };
 

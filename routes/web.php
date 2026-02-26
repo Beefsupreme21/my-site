@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LobbyController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -10,6 +11,11 @@ Route::get('/', function () {
 Route::get('/test', function () {
     return Inertia::render('Test');
 })->name('test');
+
+Route::get('/multiplayer', [LobbyController::class, 'index'])->name('multiplayer.index');
+Route::get('/lobbies/{lobby}', [LobbyController::class, 'show'])->name('lobbies.show');
+Route::post('/lobbies', [LobbyController::class, 'store'])->name('lobbies.store');
+Route::post('/lobbies/join', [LobbyController::class, 'join'])->name('lobbies.join');
 
 Route::get('/projects/{id}', function (int $id) {
     $projects = [
@@ -39,9 +45,8 @@ Route::get('/projects/{id}', function (int $id) {
         ],
         5 => [
             'id' => 5,
-            'title' => 'Breakout',
-            'description' => 'Classic block breaker. Move the paddle with mouse or arrow keys, press Space to launch. Break all bricks to win.',
-            'demoComponent' => 'breakout',
+            'title' => 'Multiplayer Lobby',
+            'description' => 'Simple 2-player lobbies. Start a lobby, share the code, join from another browser.',
         ],
         6 => [
             'id' => 6,
@@ -52,6 +57,10 @@ Route::get('/projects/{id}', function (int $id) {
     ];
 
     $project = $projects[$id] ?? abort(404);
+
+    if ($id === 5) {
+        return app(LobbyController::class)->index(request());
+    }
 
     return Inertia::render('project-demo', [
         'project' => $project,

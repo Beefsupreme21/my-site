@@ -54,21 +54,22 @@ const PROJECTS = [
         title: 'Snake',
         description:
             'Classic Snake. Use arrow keys to move, eat the yellow dots to grow. Don\'t hit the walls or yourself.',
-        image: '/images/kanban.png',
+        image: '/images/snake.png',
     },
     {
         id: 5,
-        title: 'Breakout',
+        title: 'Multiplayer Lobby',
         description:
-            'Classic block breaker. Move the paddle with mouse or arrow keys, press Space to launch. Break all bricks to win.',
-        image: '/images/wordle.png',
+            'Simple 2-player lobbies. Start a lobby, share the code, join from another browser.',
+        image: '/images/poker.png',
+        link: '/multiplayer',
     },
     {
         id: 6,
         title: 'BlackJack',
         description:
             'Classic Blackjack. Get as close to 21 as you can without going over. Beat the dealer.',
-        image: '/images/racing-game.png',
+        image: '/images/poker.png',
     },
 ];
 
@@ -292,7 +293,7 @@ export default function Welcome() {
                                             borderWidth={1}
                                         />
                                         <Link
-                                            href={`/projects/${project.id}`}
+                                            href={'link' in project && project.link ? project.link : `/projects/${project.id}`}
                                             className="group relative block h-full overflow-hidden rounded-xl bg-neutral-900 shadow-lg transition-shadow hover:shadow-xl"
                                         >
                                             <div className="relative aspect-video w-full overflow-hidden bg-neutral-800">

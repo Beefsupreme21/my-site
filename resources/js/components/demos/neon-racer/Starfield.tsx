@@ -46,9 +46,8 @@ export default function Starfield() {
             <bufferGeometry>
                 <bufferAttribute
                     attach="attributes-position"
+                    args={[positions, 3]}
                     count={COUNT}
-                    array={positions}
-                    itemSize={3}
                 />
             </bufferGeometry>
             <pointsMaterial
