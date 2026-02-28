@@ -1,6 +1,9 @@
 <?php
 
+use App\Events\TestBroadcast;
 use App\Http\Controllers\LobbyController;
+use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,6 +14,26 @@ Route::get('/', function () {
 Route::get('/test', function () {
     return Inertia::render('Test');
 })->name('test');
+
+Route::get('/test-broadcast', function () {
+    return Inertia::render('test-broadcast');
+})->name('test.broadcast');
+Route::get('/test-broadcast/send', function () {
+    $sent = false;
+    try {
+        broadcast(new TestBroadcast);
+        Log::info('TestBroadcast sent to Reverb');
+        $sent = true;
+    } catch (BroadcastException $e) {
+        Log::warning('TestBroadcast failed (is Reverb running?)', ['error' => $e->getMessage()]);
+    }
+
+    if (request()->wantsJson() || request()->header('X-Requested-With') === 'XMLHttpRequest') {
+        return response()->json(['sent' => $sent]);
+    }
+
+    return redirect()->route('test.broadcast');
+})->name('test.broadcast.send');
 
 Route::get('/multiplayer', [LobbyController::class, 'index'])->name('multiplayer.index');
 Route::get('/lobbies/{lobby}', [LobbyController::class, 'show'])->name('lobbies.show');

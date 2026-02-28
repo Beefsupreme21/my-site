@@ -8,6 +8,8 @@ declare global {
 }
 
 window.Pusher = Pusher;
+// Uncomment to see every Pusher/Reverb message in the console:
+// window.Pusher.logToConsole = true;
 
 export interface ReverbConfig {
     key: string;
@@ -22,14 +24,15 @@ export function getEcho(config: ReverbConfig | null): Echo<'reverb'> | null {
     if (!config?.key) return null;
     if (echoInstance) return echoInstance;
 
-    const wsHost = config.scheme === 'https' ? config.host : `${config.host}:${config.port}`;
+    const port = Number(config.port) || 8080;
+    const wsHost = config.scheme === 'https' ? config.host : `${config.host}:${port}`;
 
     echoInstance = new Echo({
         broadcaster: 'reverb',
         key: config.key,
         wsHost,
-        wsPort: config.port,
-        wssPort: config.port,
+        wsPort: port,
+        wssPort: port,
         forceTLS: config.scheme === 'https',
         enabledTransports: ['ws', 'wss'],
     });
