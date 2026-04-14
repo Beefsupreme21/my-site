@@ -58,11 +58,11 @@ const PROJECTS = [
     },
     {
         id: 5,
-        title: 'Multiplayer Lobby',
+        title: 'Cube2',
         description:
-            'Simple 2-player lobbies. Start a lobby, share the code, join from another browser.',
+            'Wave tile game with multiplayer movement. Step on the right color before time runs out.',
         image: '/images/poker.png',
-        link: '/multiplayer',
+        link: '/projects/cube2/lobby',
     },
     {
         id: 6,

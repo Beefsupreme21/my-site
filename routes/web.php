@@ -2,6 +2,7 @@
 
 use App\Events\TestBroadcast;
 use App\Http\Controllers\LobbyController;
+use App\Http\Controllers\Projects\Cube2\GameController as Cube2GameController;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,14 @@ Route::get('/lobbies/{lobby}', [LobbyController::class, 'show'])->name('lobbies.
 Route::post('/lobbies', [LobbyController::class, 'store'])->name('lobbies.store');
 Route::post('/lobbies/join', [LobbyController::class, 'join'])->name('lobbies.join');
 
+Route::prefix('/projects/cube2')->name('projects.cube2.')->group(function () {
+    Route::get('/', [Cube2GameController::class, 'show'])->name('game.show');
+    Route::get('/lobby', fn () => view('projects.cube2.lobby'))->name('lobby');
+    Route::post('/game/join', [Cube2GameController::class, 'join'])->name('game.join');
+    Route::post('/game/move', [Cube2GameController::class, 'move'])->name('game.move');
+    Route::post('/game/leave', [Cube2GameController::class, 'leave'])->name('game.leave');
+});
+
 Route::get('/projects/{id}', function (int $id) {
     $projects = [
         1 => [
@@ -68,8 +77,9 @@ Route::get('/projects/{id}', function (int $id) {
         ],
         5 => [
             'id' => 5,
-            'title' => 'Multiplayer Lobby',
-            'description' => 'Simple 2-player lobbies. Start a lobby, share the code, join from another browser.',
+            'title' => 'Cube2',
+            'description' => 'Wave tile game with multiplayer movement. Step on the right color before time runs out.',
+            'link' => '/projects/cube2/lobby',
         ],
         6 => [
             'id' => 6,
@@ -82,7 +92,7 @@ Route::get('/projects/{id}', function (int $id) {
     $project = $projects[$id] ?? abort(404);
 
     if ($id === 5) {
-        return app(LobbyController::class)->index(request());
+        return redirect()->route('projects.cube2.lobby');
     }
 
     return Inertia::render('project-demo', [
