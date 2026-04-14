@@ -1,5 +1,23 @@
 @import 'tailwindcss';
 
+/*
+ * macOS / iOS rubber-band overscroll shows the canvas behind the page (usually html/body).
+ * Match welcome page surfaces so the “peek” isn’t bright white in dark mode.
+ */
+html {
+    background-color: #fdfdfc;
+    color-scheme: light;
+}
+
+html.dark {
+    background-color: #0a0a0a;
+    color-scheme: dark;
+}
+
+body {
+    background-color: inherit;
+}
+
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 

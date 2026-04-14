@@ -33,21 +33,21 @@ const PROJECTS = [
         title: 'Kanban',
         description:
             'A simple Kanban board. Add tasks and drag them between columns.',
-        image: '/images/wordle.png',
+        image: '/images/kanban.png',
     },
     {
         id: 2,
         title: 'Racing Game',
         description:
             'An interactive 3D racing game built with Three.js and React Three Fiber.',
-        image: '/images/kanban.png',
+        image: '/images/racing-game.png',
     },
     {
         id: 3,
         title: 'Wordle',
         description:
             'Guess the 5-letter word in 6 tries. Green = right spot, yellow = wrong spot.',
-        image: '/images/racing-game.png',
+        image: '/images/wordle.png',
     },
     {
         id: 4,
@@ -74,6 +74,8 @@ const PROJECTS = [
 ];
 
 const INITIAL_PROJECTS_COUNT = 3;
+
+const SHOW_TIMELINE = false;
 
 type Lightbox = { src: string; alt: string; description: string } | null;
 
@@ -354,11 +356,13 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                <Separator className="bg-neutral-800" />
-                {/* Timeline */}
-                <section className="relative bg-[#0a0a0a] px-6 py-16 dark:bg-[#0a0a0a] lg:py-24">
-                    <div className="relative mx-auto max-w-3xl z-10">
-                        <Timeline
+                {SHOW_TIMELINE && (
+                    <>
+                        <Separator className="bg-neutral-800" />
+                        {/* Timeline */}
+                        <section className="relative bg-[#0a0a0a] px-6 py-16 dark:bg-[#0a0a0a] lg:py-24">
+                            <div className="relative mx-auto max-w-3xl z-10">
+                                <Timeline
                             title="My Dev Journey"
                             subtitle="2022 – 2026. Here's a timeline of what I've been up to."
                             data={[
@@ -899,9 +903,11 @@ export default function Welcome() {
                                     ),
                                 },
                             ]}
-                        />
-                    </div>
-                </section>
+                                />
+                            </div>
+                        </section>
+                    </>
+                )}
                 </main>
             </div>
         </>
