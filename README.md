@@ -15,69 +15,70 @@ Full-stack Laravel application that serves as a portfolio home page and a playgr
 | Routing (TS) | [Laravel Wayfinder](https://github.com/laravel/wayfinder) |
 | Tests | [Pest 4](https://pestphp.com) |
 
-## Features (high level)
+## Features
 
-- **Landing / welcome** — Inertia page with project highlights, skills, and timeline-style content.
-- **Project demos** — `/projects/{id}` loads registered demos (Kanban, Wordle, Snake, Blackjack, a Three.js racing scene, and more) via a shared demo shell.
-- **Cube2** — Wave-style tile game with a lobby and server-backed game routes under `/projects/cube2`; multiplayer/realtime features expect Reverb when enabled.
-- **Lobbies** — `/multiplayer` and lobby routes for experimenting with presence and game flow.
-- **Broadcast smoke test** — `/test-broadcast` for verifying WebSockets when Reverb is configured.
+### Landing / welcome
 
-## Requirements
+<img src="./public/images/personalsite.png" alt="Personal site preview" width="640" />
 
-- PHP **8.2+** with extensions Laravel needs (e.g. `pdo_sqlite`, `mbstring`, `openssl`, `curl`)
-- [Composer](https://getcomposer.org)
-- [Node.js](https://nodejs.org) **22+** (or current LTS that matches your local Vite/tooling)
-- **SQLite** by default (see `.env.example`); you can switch to MySQL/Postgres if you prefer.
+The home page is a single Inertia route: hero, animated UI accents, **project cards** (same previews as below), skills / tools, optional timeline, and links out. Project tiles deep-link into each demo or the Cube2 lobby.
 
-## Quick start
+---
 
-```bash
-git clone <your-repo-url> my-site
-cd my-site
-composer run setup
-```
+### Project demos (`/projects/{id}`)
 
-`composer run setup` installs PHP dependencies, ensures `.env` exists, generates the app key, runs migrations, installs npm packages, and runs a production Vite build.
+Each demo is registered in `routes/web.php` and rendered through a shared Inertia **project demo** shell. Thumbnails match the **welcome** project grid (`resources/js/pages/welcome.tsx`).
 
-### Local development
+#### Racing Game — `/projects/2`
 
-```bash
-composer run dev
-```
+<img src="./public/images/racing-game.png" alt="Racing Game preview" width="640" />
 
-That runs the Laravel dev server, queue worker, log tail (Pail), and `npm run dev` together. Visit the URL shown by `php artisan serve` (typically `http://127.0.0.1:8000`).
+Interactive 3D scene built with **Three.js** and **React Three Fiber** (orbit-style camera: drag to rotate, scroll to zoom).
 
-For assets only:
+#### Kanban — `/projects/1`
 
-```bash
-npm run dev
-```
+<img src="./public/images/kanban.png" alt="Kanban preview" width="640" />
 
-### Optional: Reverb (WebSockets)
+Simple board: add tasks and drag them between columns (in-memory only).
 
-For realtime lobbies and broadcasting, set `BROADCAST_CONNECTION=reverb` in `.env` and fill in the `REVERB_*` variables from `.env.example`. Then start Reverb (e.g. `php artisan reverb:start`) alongside your app. With `BROADCAST_CONNECTION=log`, broadcasts stay local without a socket server.
+#### Multiplayer (Cube2 lobby) — `/projects/cube2/lobby`
 
-## Common commands
+<img src="./public/images/cube.png" alt="Cube2 / multiplayer preview" width="640" />
 
-| Command | Purpose |
-|---------|---------|
-| `composer run dev` | App + queue + logs + Vite |
-| `composer run test` | Pint (style) + Pest tests |
-| `npm run build` | Production frontend build |
-| `npm run lint` | ESLint |
-| `npm run types` | TypeScript check (`tsc --noEmit`) |
-| `npm run format` | Prettier on `resources/` |
+Entry point for the **Cube2** wave-tile prototype; the welcome card links here instead of a static `/projects/5` page.
 
-## Project layout (short)
+#### Wordle — `/projects/3`
 
-- `app/` — Laravel application code
-- `routes/web.php` — Web routes, Inertia pages, project demo registry
-- `resources/js/pages/` — Inertia React pages (`welcome`, `project-demo`, etc.)
-- `resources/js/components/` — UI primitives, demos, and shared pieces
-- `public/` — Static assets (images, SVG logos, etc.)
-- `tests/` — Pest tests
+<img src="./public/images/wordle.png" alt="Wordle preview" width="640" />
 
-## License
+Guess the five-letter word in six tries with familiar green / yellow feedback.
 
-Released under the [MIT License](https://opensource.org/licenses/MIT) (see `composer.json` `license` field). Add a root `LICENSE` file if you want the standard GitHub license badge.
+#### Snake — `/projects/4`
+
+<img src="./public/images/snake.png" alt="Snake preview" width="640" />
+
+Classic Snake: arrow keys, grow by eating dots, avoid walls and yourself.
+
+#### Blackjack — `/projects/6`
+
+<img src="./public/images/poker.png" alt="Blackjack preview" width="640" />
+
+Play a full round against the dealer toward 21.
+
+---
+
+### Cube2 (`/projects/cube2`)
+
+Server-backed routes under `/projects/cube2` handle join, move, and leave. Realtime lobby and presence expect **Reverb** (and matching `.env` broadcast settings) when you want live updates—not required for the static demos above.
+
+---
+
+### Lobbies (`/multiplayer`)
+
+Generic lobby list and room flows used to experiment with **presence** and joining games (wired toward the multiplayer work above). Handy when validating Echo + Reverb end-to-end.
+
+---
+
+### Broadcast smoke test (`/test-broadcast`)
+
+Small page plus a send route to fire a test broadcast—useful to confirm WebSockets and Reverb when `BROADCAST_CONNECTION=reverb` is enabled.
