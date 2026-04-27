@@ -53,7 +53,7 @@ export function SkillPills({ items, className, pillClassName }: SkillPillsProps)
                         }}
                         transition={{ layout: { type: 'spring', stiffness: 380, damping: 32 } }}
                     >
-                        <div className="flex h-7 w-7 shrink-0 items-center justify-center [&>svg]:h-4 [&>svg]:w-4 [&>svg]:max-h-4 [&>svg]:max-w-4">
+                        <div className="flex h-7 w-7 shrink-0 items-center justify-center [&>svg]:h-4 [&>svg]:w-4 [&>svg]:max-h-4 [&>svg]:max-w-4 [&>img]:h-4 [&>img]:w-4 [&>img]:max-h-4 [&>img]:max-w-4">
                             {item.logo}
                         </div>
                         {isHovered && (

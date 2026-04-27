@@ -13,6 +13,7 @@ import { ScrollReveal } from '@/components/ui/scroll-reveal';
 import { Timeline } from '@/components/ui/timeline';
 import {
   ReactLogo,
+  ThreeJsLogo,
   LaravelLogo,
   AlpineLogo,
   TailwindLogo,
@@ -29,6 +30,13 @@ import {
 
 const PROJECTS = [
     {
+        id: 2,
+        title: 'Racing Game',
+        description:
+            'An interactive 3D racing game built with Three.js and React Three Fiber.',
+        image: '/images/racing-game.png',
+    },
+    {
         id: 1,
         title: 'Kanban',
         description:
@@ -36,11 +44,12 @@ const PROJECTS = [
         image: '/images/kanban.png',
     },
     {
-        id: 2,
-        title: 'Racing Game',
+        id: 5,
+        title: 'Multiplayer Game',
         description:
-            'An interactive 3D racing game built with Three.js and React Three Fiber.',
-        image: '/images/racing-game.png',
+            'Realtime multiplayer game prototype powered by Laravel Reverb.',
+        image: '/images/cube.png',
+        link: '/projects/cube2/lobby',
     },
     {
         id: 3,
@@ -57,14 +66,6 @@ const PROJECTS = [
         image: '/images/snake.png',
     },
     {
-        id: 5,
-        title: 'Cube2',
-        description:
-            'Wave tile game with multiplayer movement. Step on the right color before time runs out.',
-        image: '/images/poker.png',
-        link: '/projects/cube2/lobby',
-    },
-    {
         id: 6,
         title: 'BlackJack',
         description:
@@ -75,7 +76,7 @@ const PROJECTS = [
 
 const INITIAL_PROJECTS_COUNT = 3;
 
-const SHOW_TIMELINE = false;
+const SHOW_TIMELINE = true;
 
 type Lightbox = { src: string; alt: string; description: string } | null;
 
@@ -381,14 +382,7 @@ export default function Welcome() {
                                                         'An interactive 3D racing game built with Three.js and React Three Fiber.',
                                                     tools: [
                                                         { name: 'React', logo: <ReactLogo /> },
-                                                        {
-                                                            name: 'Three.js',
-                                                            logo: (
-                                                                <span className="text-[10px] font-medium text-neutral-400">
-                                                                    Three.js
-                                                                </span>
-                                                            ),
-                                                        },
+                                                        { name: 'Three.js', logo: <ThreeJsLogo /> },
                                                     ],
                                                 },
                                                 {

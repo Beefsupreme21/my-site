@@ -1,5 +1,12 @@
 // Logo SVG components extracted from Blade files
 
+/** Public asset: `public/logos/svg/threejs-logo.svg` */
+const threeJsLogoSrc = '/logos/svg/threejs-logo.svg';
+
+export const ThreeJsLogo = () => (
+  <img src={threeJsLogoSrc} alt="" aria-hidden className="object-contain" />
+);
+
 export const ReactLogo = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="-11.5 -10.23174 23 20.46348">
     <circle cx="0" cy="0" r="2.05" fill="#61dafb" />
