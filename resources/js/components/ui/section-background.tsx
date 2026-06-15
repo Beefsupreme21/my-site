@@ -25,7 +25,7 @@ export function SectionBackground({
         aria-hidden
         style={{
           background:
-            "radial-gradient(ellipse 70% 50% at 50% 35%, rgba(168, 85, 247, 0.18) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 85%)",
+            "radial-gradient(ellipse 70% 50% at 50% 35%, rgba(var(--brand-rgb), 0.18) 0%, rgba(var(--brand-rgb), 0.05) 50%, transparent 85%)",
         }}
       />
     );
@@ -44,18 +44,18 @@ export function SectionBackground({
           className={cn(
             "absolute inset-0",
             "[background-size:40px_40px]",
-            "[background-image:linear-gradient(to_right,#a855f7_1px,transparent_1px),linear-gradient(to_bottom,#a855f7_1px,transparent_1px)]",
+            "[background-image:linear-gradient(to_right,rgb(var(--gradient-to))_1px,transparent_1px),linear-gradient(to_bottom,rgb(var(--gradient-to))_1px,transparent_1px)]",
           )}
           style={variant === "grid-small" ? { backgroundSize: "20px 20px" } : undefined}
         />
       )}
-      {/* DotBackgroundDemo: 20px grid, purple dots */}
+      {/* DotBackgroundDemo: 20px grid, brand blue dots */}
       {variant === "dots" && (
         <div
           className={cn(
             "absolute inset-0",
             "[background-size:20px_20px]",
-            "[background-image:radial-gradient(#a855f7_1px,transparent_1px)]",
+            "[background-image:radial-gradient(rgb(var(--gradient-to))_1px,transparent_1px)]",
           )}
         />
       )}

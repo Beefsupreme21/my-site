@@ -132,7 +132,7 @@ const CollisionMechanism = ({
         key={beamKey}
         ref={beamRef}
         className={cn(
-          "absolute left-0 top-0 w-1 rounded-full bg-gradient-to-b from-white/45 to-purple-500/50",
+          "absolute left-0 top-0 w-1 rounded-full bg-gradient-to-b from-white/45 to-[rgb(var(--gradient-to))]/50",
           className ?? "h-10"
         )}
         style={{
@@ -184,7 +184,7 @@ const Explosion = ({
       {particles.map((p) => (
         <motion.span
           key={p.id}
-          className="absolute h-2 w-2 rounded-full bg-purple-400/90"
+          className="absolute h-2 w-2 rounded-full bg-[rgb(var(--gradient-mid))]/90"
           initial={{ x: 0, y: 0, opacity: 1 }}
           animate={{
             x: p.directionX,

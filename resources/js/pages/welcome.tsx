@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { cn } from '@/lib/utils';
 import { EncryptedText } from '@/components/ui/encrypted-text';
-import { BackgroundBeamsWithCollision } from '@/components/ui/background-beams-with-collision';
 import { NoiseBackground } from '@/components/ui/noise-background';
 import { DottedGlowBackground } from '@/components/ui/dotted-glow-background';
 import { GlowingEffect } from '@/components/ui/glowing-effect';
-import { Separator } from '@/components/ui/separator';
 import { LogoCloudBlur } from '@/components/ui/logo-cloud-blur';
-import { SkillPills } from '@/components/ui/skill-pills';
+import { SkillPills, type SkillPillItem } from '@/components/ui/skill-pills';
+import { SiteFooter } from '@/components/site-footer';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
+import { SectionHeading } from '@/components/ui/section-heading';
 import { Timeline } from '@/components/ui/timeline';
 import {
   ReactLogo,
@@ -78,6 +78,24 @@ const INITIAL_PROJECTS_COUNT = 3;
 
 const SHOW_TIMELINE = true;
 
+const CONTACT_LINKS: SkillPillItem[] = [
+    {
+        name: 'GitHub',
+        logo: <GithubLogo />,
+        href: 'https://github.com/Beefsupreme21',
+    },
+    {
+        name: 'LinkedIn',
+        logo: <LinkedInLogo />,
+        href: 'https://www.linkedin.com/in/cory-sanda-74769924a/',
+    },
+    {
+        name: 'Email',
+        logo: <EmailIcon />,
+        href: 'mailto:beefsupreme21@hotmail.com',
+    },
+];
+
 type Lightbox = { src: string; alt: string; description: string } | null;
 
 export default function Welcome() {
@@ -138,11 +156,12 @@ export default function Welcome() {
             )}
             <div className="min-h-screen bg-[#FDFDFC] dark:bg-[#0a0a0a]">
                 <main className="flex flex-col">
-                {/* Hero Section – Background Beams */}
-                <BackgroundBeamsWithCollision
-                    className="flex min-h-[70vh] flex-col items-center justify-center gap-8 px-6 py-20 lg:py-32"
+                {/* Hero Section */}
+                <section
+                    className="relative flex min-h-[70vh] flex-col items-center justify-center gap-8 overflow-hidden bg-[#0a0a0a] px-6 py-20 lg:py-32"
                 >
-                    <div className="mx-auto w-full max-w-4xl text-center">
+                    <div className="hero-glow pointer-events-none absolute inset-0" aria-hidden />
+                    <div className="relative z-10 mx-auto w-full max-w-4xl text-center">
                         {/* Profile, intro, and social links */}
                         <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-10">
                             <ScrollReveal direction="right" delay={0.2}>
@@ -156,23 +175,7 @@ export default function Welcome() {
                                     </div>
                                     <SkillPills
                                         pillClassName="text-neutral-400 hover:text-neutral-300 hover:scale-105"
-                                        items={[
-                                            {
-                                                name: 'GitHub',
-                                                logo: <GithubLogo />,
-                                                href: 'https://github.com/Beefsupreme21',
-                                            },
-                                            {
-                                                name: 'LinkedIn',
-                                                logo: <LinkedInLogo />,
-                                                href: 'https://www.linkedin.com/in/cory-sanda-74769924a/',
-                                            },
-                                            {
-                                                name: 'Email',
-                                                logo: <EmailIcon />,
-                                                href: 'mailto:beefsupreme21@hotmail.com',
-                                            },
-                                        ]}
+                                        items={CONTACT_LINKS}
                                     />
                                 </div>
                             </ScrollReveal>
@@ -200,43 +203,41 @@ export default function Welcome() {
                             </ScrollReveal>
                         </div>
 
-                        {/* CTA – Aceternity NoiseBackground (animated gradients + noise) with our light purple → purple palette */}
+                        {/* CTA – animated gradient border (brand blue palette) */}
                         <div className="mt-12 flex justify-center">
                             <NoiseBackground
                                 containerClassName="w-fit rounded-full p-[6px]"
                                 gradientColors={[
-                                    "rgb(233, 213, 255)", // purple-200
-                                    "rgb(216, 180, 254)", // purple-300
-                                    "rgb(168, 85, 247)",  // purple-500
+                                    'rgb(var(--gradient-from))',
+                                    'rgb(var(--gradient-mid))',
+                                    'rgb(var(--gradient-to))',
                                 ]}
                                 noiseIntensity={0.25}
                                 speed={0.12}
                             >
                                 <Link
                                     href="#projects"
-                                    className="block h-full w-full rounded-full bg-[#0a0a0a] px-6 py-3 text-center font-medium text-white transition-all duration-100 hover:bg-neutral-900/90 hover:text-purple-200 active:scale-[0.98]"
+                                    className="block h-full w-full rounded-full bg-[#0a0a0a] px-6 py-3 text-center font-medium text-white transition-all duration-100 hover:bg-neutral-900/90 hover:text-brand-mid active:scale-[0.98]"
                                 >
                                     See Projects
                                 </Link>
                             </NoiseBackground>
                         </div>
                     </div>
-                </BackgroundBeamsWithCollision>
+                </section>
 
-                <Separator className="bg-neutral-800" />
                 {/* Skills & Tools */}
                 <section
                     id="skills"
-                    className="relative bg-[#0a0a0a] px-6 py-16 lg:py-24"
+                    className="relative bg-[#f8f8f6] px-6 py-16 lg:py-24"
                 >
                     <div className="relative mx-auto max-w-6xl z-10">
                         <ScrollReveal direction="up" delay={0.1}>
-                            <h2 className="mb-2 text-center text-3xl font-bold text-white lg:text-4xl">
-                                Skills & Tools
-                            </h2>
-                            <p className="mb-12 text-center text-sm text-neutral-400 md:text-base">
-                                Technologies I use to build things.
-                            </p>
+                            <SectionHeading
+                                prefix="The stack"
+                                title="Skills & tools"
+                                subtitle="Laravel at the center, with React, Livewire, and Tailwind for the parts people actually click."
+                            />
                         </ScrollReveal>
                         <ScrollReveal direction="up" delay={0.2}>
                             <LogoCloudBlur
@@ -257,16 +258,15 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                <Separator className="bg-neutral-800" />
                 {/* Projects */}
-                <section id="projects" className="relative bg-[#0a0a0a] px-6 py-16 dark:bg-[#0a0a0a] lg:py-24">
+                <section id="projects" className="relative bg-[#f2f2f0] px-6 py-16 lg:py-24">
                     <DottedGlowBackground
                         className="pointer-events-none z-0 mask-radial-to-90% mask-radial-at-center"
                         opacity={1}
                         gap={10}
                         radius={1.6}
-                        color="rgba(168, 85, 247, 0.5)"
-                        glowColor="rgba(168, 85, 247, 0.85)"
+                        color="rgba(16, 158, 255, 0.5)"
+                        glowColor="rgba(16, 158, 255, 0.85)"
                         backgroundOpacity={0}
                         speedMin={0.3}
                         speedMax={1.6}
@@ -274,9 +274,11 @@ export default function Welcome() {
                     />
                     <div className="relative mx-auto max-w-6xl z-10">
                         <ScrollReveal direction="up" delay={0.1}>
-                            <h2 className="mb-12 text-center text-3xl font-bold text-white lg:text-4xl">
-                                Projects
-                            </h2>
+                            <SectionHeading
+                                prefix="Side projects"
+                                title="See them in action"
+                                subtitle="Demos I built to learn and tinker—games, 3D, and a little realtime. Open a card and try one."
+                            />
                         </ScrollReveal>
                         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {visibleProjects.map((project, index) => (
@@ -286,7 +288,7 @@ export default function Welcome() {
                                     delay={0.2 + index * 0.1}
                                     className="h-full"
                                 >
-                                    <div className="relative h-full rounded-2xl border border-neutral-800 p-2 transition-all hover:scale-[1.03] md:rounded-3xl md:p-3">
+                                    <div className="relative h-full rounded-2xl border border-neutral-300 p-2 transition-all hover:scale-[1.03] md:rounded-3xl md:p-3">
                                         <GlowingEffect
                                             spread={40}
                                             glow={false}
@@ -330,7 +332,7 @@ export default function Welcome() {
                         {hasMore && (
                             <ScrollReveal direction="up" delay={0.2}>
                                 <div className="mt-10 flex justify-center">
-                                    <div className="relative rounded-full border border-neutral-800 p-2 transition-all hover:scale-[1.03]">
+                                    <div className="relative rounded-full border border-neutral-300 p-2 transition-all hover:scale-[1.03]">
                                         <GlowingEffect
                                             spread={40}
                                             glow={false}
@@ -346,7 +348,7 @@ export default function Welcome() {
                                                     Math.min(c + 3, PROJECTS.length),
                                                 )
                                             }
-                                            className="relative rounded-full bg-neutral-900 px-6 py-3 text-sm font-medium text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-white"
+                                            className="relative rounded-full bg-neutral-900 px-6 py-3 text-sm font-medium text-neutral-100 transition-colors hover:bg-neutral-800"
                                         >
                                             See more
                                         </button>
@@ -358,14 +360,14 @@ export default function Welcome() {
                 </section>
 
                 {SHOW_TIMELINE && (
-                    <>
-                        <Separator className="bg-neutral-800" />
-                        {/* Timeline */}
-                        <section className="relative bg-[#0a0a0a] px-6 py-16 dark:bg-[#0a0a0a] lg:py-24">
+                        <section id="journey" className="relative bg-[#f8f8f6] px-6 py-16 lg:py-24">
                             <div className="relative mx-auto max-w-3xl z-10">
                                 <Timeline
-                            title="My Dev Journey"
-                            subtitle="2022 – 2026. Here's a timeline of what I've been up to."
+                            variant="light"
+                            initialVisibleCount={1}
+                            prefix="Along the way"
+                            title="My dev journey"
+                            subtitle="2022–2026. Client work, side projects, and experiments that stuck around long enough to ship."
                             data={[
                                 {
                                     title: '2026',
@@ -405,13 +407,13 @@ export default function Welcome() {
                                                 >
                                                     <div className="min-w-0 order-2 md:order-1">
                                                         {'title' in entry && entry.title && (
-                                                            <h3 className="text-sm font-semibold text-white md:text-base">
+                                                            <h3 className="text-sm font-semibold text-neutral-900 md:text-base">
                                                                 {entry.title}
                                                             </h3>
                                                         )}
                                                         <p
                                                             className={cn(
-                                                                'text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200',
+                                                                'text-xs font-normal text-neutral-600 md:text-sm',
                                                                 'title' in entry && entry.title && 'mt-2',
                                                             )}
                                                         >
@@ -532,13 +534,13 @@ export default function Welcome() {
                                                 >
                                                     <div className="min-w-0 order-2 md:order-1">
                                                         {'title' in entry && entry.title && (
-                                                            <h3 className="text-sm font-semibold text-white md:text-base">
+                                                            <h3 className="text-sm font-semibold text-neutral-900 md:text-base">
                                                                 {entry.title}
                                                             </h3>
                                                         )}
                                                         <p
                                                             className={cn(
-                                                                'text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200',
+                                                                'text-xs font-normal text-neutral-600 md:text-sm',
                                                                 'title' in entry && entry.title && 'mt-2',
                                                             )}
                                                         >
@@ -571,7 +573,7 @@ export default function Welcome() {
                                     content: (
                                         <div className="grid grid-cols-1 gap-6 md:grid-cols-[1fr_auto] md:gap-8">
                                             <div>
-                                                <h3 className="text-base font-semibold text-white md:text-lg">
+                                                <h3 className="text-base font-semibold text-neutral-900 md:text-lg">
                                                     <span className="inline-flex items-center gap-2">
                                                         Comra{' '}
                                                         <SkillPills
@@ -586,7 +588,7 @@ export default function Welcome() {
                                                         />
                                                     </span>
                                                 </h3>
-                                                <p className="mt-2 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200">
+                                                <p className="mt-2 text-xs font-normal text-neutral-600 md:text-sm">
                                                     The &quot;Color of Money Risk Analysis&quot; was another financial template. It
                                                     featured a 13-question dynamic survey with a calculated score at the end.
                                                 </p>
@@ -721,11 +723,11 @@ export default function Welcome() {
                                                 >
                                                     <div className="min-w-0 order-2 md:order-1">
                                                         {'title' in entry && entry.title && (
-                                                            <h3 className="text-sm font-semibold text-white md:text-base">
+                                                            <h3 className="text-sm font-semibold text-neutral-900 md:text-base">
                                                                 {entry.title}
                                                             </h3>
                                                         )}
-                                                        <p className={cn('text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200', 'title' in entry && entry.title && 'mt-2')}>
+                                                        <p className={cn('text-xs font-normal text-neutral-600 md:text-sm', 'title' in entry && entry.title && 'mt-2')}>
                                                             {entry.sentence}
                                                         </p>
                                                         <SkillPills
@@ -867,11 +869,11 @@ export default function Welcome() {
                                                 >
                                                     <div className="min-w-0 order-2 md:order-1">
                                                         {'title' in entry && entry.title && (
-                                                            <h3 className="text-sm font-semibold text-white md:text-base">
+                                                            <h3 className="text-sm font-semibold text-neutral-900 md:text-base">
                                                                 {entry.title}
                                                             </h3>
                                                         )}
-                                                        <p className={cn('text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200', 'title' in entry && entry.title && 'mt-2')}>
+                                                        <p className={cn('text-xs font-normal text-neutral-600 md:text-sm', 'title' in entry && entry.title && 'mt-2')}>
                                                             {entry.sentence}
                                                         </p>
                                                         <SkillPills
@@ -900,8 +902,38 @@ export default function Welcome() {
                                 />
                             </div>
                         </section>
-                    </>
                 )}
+
+                <section className="relative overflow-hidden bg-[#1a1a18] px-6 py-16 lg:py-24">
+                    <div className="cta-glow pointer-events-none absolute inset-0" aria-hidden />
+                    <ScrollReveal direction="up" delay={0.1}>
+                        <div className="relative z-10 mx-auto max-w-3xl text-center">
+                            <h2 className="text-3xl font-bold text-white lg:text-4xl">
+                                Want to hire me?
+                            </h2>
+                            <p className="mx-auto mt-4 max-w-xl text-base font-medium text-brand md:text-lg">
+                                I&apos;m open to Laravel and full-stack work—whether that&apos;s a role on your team or
+                                help shipping something new.
+                            </p>
+                            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+                                <a
+                                    href="mailto:beefsupreme21@hotmail.com"
+                                    className="inline-flex w-full items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-brand transition-colors hover:bg-neutral-100 sm:w-auto"
+                                >
+                                    Contact me
+                                </a>
+                                <Link
+                                    href="#projects"
+                                    className="inline-flex w-full items-center justify-center rounded-full border-2 border-white/90 bg-transparent px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
+                                >
+                                    See projects
+                                </Link>
+                            </div>
+                        </div>
+                    </ScrollReveal>
+                </section>
+
+                <SiteFooter />
                 </main>
             </div>
         </>

@@ -24,9 +24,15 @@ body {
 @theme {
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    /* Site gradient – two colors: light purple → purple (change here to reskin) */
-    --gradient-from: 233, 213, 255; /* purple-200 */
-    --gradient-to: 168, 85, 247;    /* purple-500 */
+    /* Brand blue (#109eff) – hero glow, gradients, accents */
+    --brand-rgb: 16, 158, 255;
+    --color-brand: #109eff;
+    --color-brand-hover: #0284c7;
+    --color-brand-light: #bae6ff;
+    --color-brand-mid: #38bdf8;
+    --gradient-from: 186, 230, 255;
+    --gradient-mid: 56, 189, 248;
+    --gradient-to: 16, 158, 255;
 }
 
 @keyframes scroll-skills {
@@ -94,6 +100,15 @@ body {
         radial-gradient(ellipse 80% 50% at 50% 0%, rgba(30, 30, 30, 0.4), transparent 50%),
         radial-gradient(ellipse 80% 50% at 50% 100%, rgba(20, 20, 20, 0.3), transparent 50%),
         linear-gradient(to bottom, rgba(25, 25, 25, 0.2) 0%, transparent 30%, transparent 70%, rgba(20, 20, 20, 0.15) 100%);
+}
+
+/* Hero ambient glow */
+.hero-glow {
+    background: radial-gradient(ellipse at 70% 50%, rgba(var(--brand-rgb), 0.12) 0%, transparent 60%);
+}
+
+.cta-glow {
+    background: radial-gradient(ellipse at 50% 40%, rgba(var(--brand-rgb), 0.14) 0%, transparent 65%);
 }
 
 /* Shadcn/Aceternity grid and dot backgrounds (grid-and-dot-backgrounds) */

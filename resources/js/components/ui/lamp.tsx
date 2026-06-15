@@ -26,7 +26,7 @@ export const LampContainer = ({
           className="h-[200px] w-[400px] rounded-full opacity-30 blur-3xl"
           style={{
             background:
-              "radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 70%)",
+              "radial-gradient(circle, rgba(var(--brand-rgb), 0.4) 0%, rgba(var(--brand-rgb), 0.05) 50%, transparent 70%)",
           }}
         />
       </div>

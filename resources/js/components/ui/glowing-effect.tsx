@@ -126,7 +126,7 @@ const GlowingEffect = memo(
     const gradient =
       variant === "white"
         ? `transparent 0deg, rgba(255,255,255,0.4) ${spreadDeg * 0.5}deg, transparent ${spreadDeg}deg`
-        : `transparent 0deg, rgba(34,211,238,0.5) ${spreadDeg * 0.2}deg, rgba(168,85,247,0.6) ${spreadDeg * 0.5}deg, rgba(236,72,153,0.5) ${spreadDeg * 0.8}deg, transparent ${spreadDeg}deg`;
+        : `transparent 0deg, rgba(var(--gradient-mid), 0.5) ${spreadDeg * 0.2}deg, rgba(var(--brand-rgb), 0.65) ${spreadDeg * 0.5}deg, rgba(var(--gradient-from), 0.55) ${spreadDeg * 0.8}deg, transparent ${spreadDeg}deg`;
 
     return (
       <div

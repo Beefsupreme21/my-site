@@ -38,13 +38,13 @@ export default function Test() {
                     <div className="relative z-10 mx-auto w-full max-w-4xl text-center">
                         <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-10">
                             <div className="relative">
-                                {/* Blue–purple tint behind the profile image (dark mode only) */}
+                                {/* Brand blue tint behind the profile image (dark mode only) */}
                                 {isDark && (
                                     <div
                                         className="pointer-events-none absolute -inset-16 z-0 md:-inset-24"
                                         style={{
                                             background:
-                                                'radial-gradient(ellipse 70% 70% at 50% 50%, rgba(59, 130, 246, 0.7), rgba(99, 102, 241, 0.5), rgba(139, 92, 246, 0.35), transparent 65%)',
+                                                'radial-gradient(ellipse 70% 70% at 50% 50%, rgba(16, 158, 255, 0.45), rgba(56, 189, 248, 0.3), rgba(186, 230, 255, 0.15), transparent 65%)',
                                             filter: 'blur(32px)',
                                             transform: 'scale(1.1)',
                                         }}
@@ -136,9 +136,9 @@ export default function Test() {
                             <NoiseBackground
                                 containerClassName="w-fit rounded-full p-[6px]"
                                 gradientColors={[
-                                    'rgb(233, 213, 255)',
-                                    'rgb(216, 180, 254)',
-                                    'rgb(168, 85, 247)',
+                                    'rgb(var(--gradient-from))',
+                                    'rgb(var(--gradient-mid))',
+                                    'rgb(var(--gradient-to))',
                                 ]}
                                 noiseIntensity={0.25}
                                 speed={0.12}
@@ -147,8 +147,8 @@ export default function Test() {
                                     href="/#projects"
                                     className={
                                         isDark
-                                            ? 'block h-full w-full rounded-full bg-[#0a0a0a] px-6 py-3 text-center font-medium text-white transition-all duration-100 hover:bg-neutral-900/90 hover:text-purple-200 active:scale-[0.98]'
-                                            : 'block h-full w-full rounded-full bg-white px-6 py-3 text-center font-medium text-neutral-900 transition-all duration-100 hover:bg-neutral-100 hover:text-purple-700 active:scale-[0.98]'
+                                            ? 'block h-full w-full rounded-full bg-[#0a0a0a] px-6 py-3 text-center font-medium text-white transition-all duration-100 hover:bg-neutral-900/90 hover:text-brand-mid active:scale-[0.98]'
+                                            : 'block h-full w-full rounded-full bg-white px-6 py-3 text-center font-medium text-neutral-900 transition-all duration-100 hover:bg-neutral-100 hover:text-brand active:scale-[0.98]'
                                     }
                                 >
                                     See Projects

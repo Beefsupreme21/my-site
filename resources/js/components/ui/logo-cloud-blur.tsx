@@ -88,12 +88,12 @@ function LogoCloudItem({
             <div
                 className={cn(
                     'flex h-10 w-10 flex-shrink-0 items-center justify-center [&>svg]:h-6 [&>svg]:w-6 [&>svg]:object-contain',
-                    isDarkLogo && 'text-white',
+                    isDarkLogo && 'text-neutral-900',
                 )}
             >
                 {skill.logo}
             </div>
-            <span className="text-sm font-medium text-neutral-200">{skill.name}</span>
+            <span className="text-sm font-medium text-neutral-800">{skill.name}</span>
         </motion.div>
     );
 }

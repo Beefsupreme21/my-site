@@ -43,7 +43,7 @@ const INITIAL_CARDS: Record<string, Card[]> = {
 
 const COLUMN_ACCENT: Record<string, string> = {
   todo: 'border-t-amber-500/70',
-  'in-progress': 'border-t-purple-500/70',
+  'in-progress': 'border-t-brand/70',
   done: 'border-t-emerald-500/70',
 };
 
@@ -206,7 +206,7 @@ export function KanbanDemo() {
                     value={editingColumnTitle}
                     onChange={(e) => setEditingColumnTitle(e.target.value)}
                     onBlur={() => updateColumnTitle(col.id, editingColumnTitle)}
-                    className="w-full rounded border border-neutral-600 bg-neutral-800 px-2 py-1 text-sm font-semibold text-neutral-200 focus:border-purple-500 focus:outline-none"
+                    className="w-full rounded border border-neutral-600 bg-neutral-800 px-2 py-1 text-sm font-semibold text-neutral-200 focus:border-brand focus:outline-none"
                     autoFocus
                   />
                 </form>
@@ -260,13 +260,13 @@ export function KanbanDemo() {
                           }
                         }}
                         rows={2}
-                        className="w-full resize-none rounded-md border border-neutral-600 bg-neutral-800 px-3 py-2 text-sm text-white focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        className="w-full resize-none rounded-md border border-neutral-600 bg-neutral-800 px-3 py-2 text-sm text-white focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
                         autoComplete="off"
                       />
                       <div className="flex items-center gap-2">
                         <button
                           type="submit"
-                          className="rounded-md bg-purple-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-purple-500"
+                          className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-mid"
                         >
                           Save
                         </button>
@@ -335,13 +335,13 @@ export function KanbanDemo() {
                     }}
                     placeholder="Enter a title for this card..."
                     rows={2}
-                    className="w-full resize-none rounded-md border border-neutral-600 bg-neutral-800 px-3 py-2 text-sm text-white placeholder-neutral-500 focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                    className="w-full resize-none rounded-md border border-neutral-600 bg-neutral-800 px-3 py-2 text-sm text-white placeholder-neutral-500 focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
                     autoComplete="off"
                   />
                   <div className="flex items-center gap-2">
                     <button
                       type="submit"
-                      className="rounded-md bg-purple-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-purple-500"
+                      className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-mid"
                     >
                       Add card
                     </button>
@@ -399,13 +399,13 @@ export function KanbanDemo() {
                   }
                 }}
                 placeholder="Enter list title..."
-                className="mb-2 w-full rounded border border-neutral-600 bg-neutral-900 px-3 py-2 text-sm text-white placeholder-neutral-500 focus:border-purple-500 focus:outline-none"
+                className="mb-2 w-full rounded border border-neutral-600 bg-neutral-900 px-3 py-2 text-sm text-white placeholder-neutral-500 focus:border-brand focus:outline-none"
                 autoComplete="off"
               />
               <div className="flex items-center gap-2">
                 <button
                   type="submit"
-                  className="rounded-md bg-purple-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-purple-500"
+                  className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-mid"
                 >
                   Add list
                 </button>

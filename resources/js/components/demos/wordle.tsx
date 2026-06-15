@@ -202,7 +202,7 @@ export function WordleDemo() {
             <button
               type="button"
               onClick={reset}
-              className="mt-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-500"
+              className="mt-2 rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-mid"
             >
               Play again
             </button>
@@ -215,7 +215,7 @@ export function WordleDemo() {
             <button
               type="button"
               onClick={reset}
-              className="mt-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-500"
+              className="mt-2 rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-mid"
             >
               Play again
             </button>
