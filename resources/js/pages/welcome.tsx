@@ -192,8 +192,8 @@ export default function Welcome() {
                                         />
                                     </p>
                                     <p>
-                                        Welcome to my site! I&apos;m a Laravel developer who enjoys building things with the TALL stack:
-                                        Tailwind, Alpine, Laravel, and Livewire.
+                                        Welcome to my site! I&apos;m a Laravel developer who likes writing clean, sensible
+                                        code—or watching Cursor knock it out while I pretend I&apos;m supervising.
                                     </p>
                                     <p>
                                         I use this site to share projects I&apos;ve built for fun and learning. Feel free to try them out
