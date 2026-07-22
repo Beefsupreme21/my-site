@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
 import { useTheme } from '@/hooks/use-theme';
+import { cn } from '@/lib/utils';
 
 function SunIcon({ className }: { className?: string }) {
     return (

@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { AnimationController } from './animations';
-import { createCharacterMesh, applyCrouch } from './player';
 import { createDustEffect, emitDust, updateDust } from './effects';
+import { createCharacterMesh, applyCrouch } from './player';
 
 // Remote player data store
 const remotePlayers = new Map();
@@ -45,7 +45,7 @@ function createNameLabel(name, isLocal = false) {
         pointer-events: none;
         text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     `;
-    
+
     const label = new CSS2DObject(labelDiv);
     label.position.set(0, 2.2, 0); // Above player's head
     return label;
@@ -57,11 +57,11 @@ function createNameLabel(name, isLocal = false) {
 function createRemotePlayerMesh(player) {
     // Use shared character mesh creation with player's color
     const character = createCharacterMesh(player.color || '#4a90d9');
-    
+
     // Add name label
     const label = createNameLabel(player.name, false);
     character.add(label);
-    
+
     return { mesh: character, label };
 }
 
@@ -71,19 +71,19 @@ function createRemotePlayerMesh(player) {
 function addRemotePlayer(player, position = { x: 0, y: 0, z: 0 }, rotation = 0) {
     if (player.id === localPlayer.id) return; // Don't add ourselves
     if (remotePlayers.has(player.id)) return; // Already exists
-    
+
     const { mesh, label } = createRemotePlayerMesh(player);
     mesh.position.set(position.x, 1, position.z);
     mesh.rotation.y = rotation;
-    
+
     // Create animation controller for this remote player
     const animator = new AnimationController(mesh);
-    
+
     // Create dust effect for remote player
     const dustEffect = createDustEffect();
     mesh.add(dustEffect);
     dustEffect.position.set(0, 0, 0); // At feet level
-    
+
     // Store player data with velocity for prediction
     const playerData = {
         player,
@@ -98,10 +98,10 @@ function addRemotePlayer(player, position = { x: 0, y: 0, z: 0 }, rotation = 0) 
         previousPosition: new THREE.Vector3(position.x, 0, position.z),
         previousAnimation: 'idle',
     };
-    
+
     remotePlayers.set(player.id, playerData);
     scene.add(mesh);
-    
+
     console.log(`[Multiplayer] Player joined: ${player.name} (${player.id})`);
 }
 
@@ -110,32 +110,28 @@ function addRemotePlayer(player, position = { x: 0, y: 0, z: 0 }, rotation = 0) 
  */
 function updateRemotePlayer(playerId, position, rotation, animation = null, isCrouching = false) {
     if (playerId === localPlayer.id) return;
-    
+
     const playerData = remotePlayers.get(playerId);
     if (!playerData) return;
-    
+
     const now = Date.now();
     const timeDelta = (now - playerData.lastUpdateTime) / 1000;
-    
+
     // Calculate velocity from position change
     if (timeDelta > 0 && timeDelta < 1) {
-        playerData.velocity.set(
-            (position.x - playerData.targetPosition.x) / timeDelta,
-            0,
-            (position.z - playerData.targetPosition.z) / timeDelta
-        );
+        playerData.velocity.set((position.x - playerData.targetPosition.x) / timeDelta, 0, (position.z - playerData.targetPosition.z) / timeDelta);
     }
-    
+
     playerData.previousPosition.copy(playerData.targetPosition);
     playerData.targetPosition.set(position.x, position.y, position.z);
     playerData.targetRotation = rotation;
     playerData.lastUpdateTime = now;
-    
+
     // Store received animation
     if (animation) {
         playerData.receivedAnimation = animation;
     }
-    
+
     // Store crouch state
     playerData.isCrouching = isCrouching;
 }
@@ -146,10 +142,10 @@ function updateRemotePlayer(playerId, position, rotation, animation = null, isCr
 function removeRemotePlayer(playerId) {
     const playerData = remotePlayers.get(playerId);
     if (!playerData) return;
-    
+
     scene.remove(playerData.mesh);
     remotePlayers.delete(playerId);
-    
+
     console.log(`[Multiplayer] Player left: ${playerId}`);
 }
 
@@ -158,33 +154,33 @@ function removeRemotePlayer(playerId) {
  */
 export function updateRemotePlayers(deltaTime) {
     const now = Date.now();
-    
+
     remotePlayers.forEach((playerData) => {
         // Time since last network update
         const timeSinceUpdate = (now - playerData.lastUpdateTime) / 1000;
-        
+
         // Predicted position based on velocity (extrapolation)
         const predictedX = playerData.targetPosition.x + playerData.velocity.x * Math.min(timeSinceUpdate, 0.1);
         const predictedZ = playerData.targetPosition.z + playerData.velocity.z * Math.min(timeSinceUpdate, 0.1);
-        
+
         // Smooth interpolation toward predicted position
         const lerpFactor = Math.min(1, deltaTime * 15); // Faster lerp for responsiveness
-        
+
         playerData.mesh.position.x += (predictedX - playerData.mesh.position.x) * lerpFactor;
         playerData.mesh.position.y += (playerData.targetPosition.y - playerData.mesh.position.y) * lerpFactor;
         playerData.mesh.position.z += (predictedZ - playerData.mesh.position.z) * lerpFactor;
-        
+
         // Interpolate rotation (handle wrap-around)
         let rotDiff = playerData.targetRotation - playerData.mesh.rotation.y;
         while (rotDiff > Math.PI) rotDiff -= 2 * Math.PI;
         while (rotDiff < -Math.PI) rotDiff += 2 * Math.PI;
         playerData.mesh.rotation.y += rotDiff * lerpFactor;
-        
+
         // Decay velocity over time if no updates
         if (timeSinceUpdate > 0.1) {
             playerData.velocity.multiplyScalar(0.9);
         }
-        
+
         // Update animation - use received animation from network
         if (playerData.receivedAnimation) {
             // For one-shot animations like jump, use duration
@@ -193,33 +189,29 @@ export function updateRemotePlayers(deltaTime) {
             } else if (playerData.receivedAnimation !== 'jump') {
                 playerData.animator.play(playerData.receivedAnimation);
             }
-            
+
             // Emit dust continuously while remote player is running
             if (playerData.receivedAnimation === 'run' && playerData.mesh.position.y < 1.5) {
-                const moveDirection = new THREE.Vector3(
-                    Math.sin(playerData.mesh.rotation.y),
-                    0,
-                    Math.cos(playerData.mesh.rotation.y)
-                );
-                
+                const moveDirection = new THREE.Vector3(Math.sin(playerData.mesh.rotation.y), 0, Math.cos(playerData.mesh.rotation.y));
+
                 // Position dust further behind the player (opposite to movement direction)
                 const backwardOffset = 0.8; // Distance behind player (increased from 0.3)
                 const footPosition = new THREE.Vector3(
                     playerData.mesh.position.x - moveDirection.x * backwardOffset,
                     playerData.mesh.position.y - 0.4,
-                    playerData.mesh.position.z - moveDirection.z * backwardOffset
+                    playerData.mesh.position.z - moveDirection.z * backwardOffset,
                 );
-                
+
                 emitDust(playerData.dustEffect, footPosition, moveDirection, deltaTime * 30);
             }
         }
         playerData.animator.update(deltaTime);
-        
+
         // Apply crouch to remote player
         if (playerData.isCrouching !== undefined) {
             applyCrouch(playerData.mesh, playerData.isCrouching, deltaTime);
         }
-        
+
         // Update dust effect for remote player
         updateDust(playerData.dustEffect, deltaTime);
     });
@@ -253,27 +245,27 @@ export function setCrouching(isCrouching) {
  */
 export function broadcastPosition(playerState) {
     if (!channel || !localPlayer) return;
-    
+
     const now = Date.now();
     if (now - lastBroadcastTime < BROADCAST_INTERVAL) return;
-    
+
     const pos = playerState.position;
     const rot = playerState.rotation;
-    
+
     // Only broadcast if position/rotation/animation/crouch changed significantly
     const posDelta = Math.abs(pos.x - lastPosition.x) + Math.abs(pos.z - lastPosition.z) + Math.abs(pos.y - lastPosition.y);
     const rotDelta = Math.abs(rot - lastRotation);
     const animChanged = currentAnimation !== lastAnimation;
     const crouchChanged = currentCrouching !== lastCrouching;
-    
+
     if (posDelta < 0.01 && rotDelta < 0.01 && !animChanged && !crouchChanged) return;
-    
+
     lastBroadcastTime = now;
     lastPosition = { x: pos.x, y: pos.y, z: pos.z };
     lastRotation = rot;
     lastAnimation = currentAnimation;
     lastCrouching = currentCrouching;
-    
+
     // Send position update to server (include socket ID so we don't receive our own update)
     fetch(window.gameConfig?.routes?.move ?? '/projects/cube2/game/move', {
         method: 'POST',
@@ -290,24 +282,24 @@ export function broadcastPosition(playerState) {
             rotation: rot,
             animation: currentAnimation,
         }),
-    }).catch(err => console.warn('[Multiplayer] Failed to broadcast position:', err));
+    }).catch((err) => console.warn('[Multiplayer] Failed to broadcast position:', err));
 }
 
 /**
  * Initialize multiplayer connection using public channel
  */
-export function initMultiplayer(gameScene, config, playerMesh, camera, renderer) {
+export function initMultiplayer(gameScene, config, playerMesh) {
     scene = gameScene;
     localPlayer = config.player;
     gameId = config.gameId;
     localPlayerMesh = playerMesh;
-    
+
     console.log(`[Multiplayer] ========================================`);
     console.log(`[Multiplayer] Initializing multiplayer`);
     console.log(`[Multiplayer] Player:`, localPlayer);
     console.log(`[Multiplayer] Game ID: ${gameId}`);
     console.log(`[Multiplayer] ========================================`);
-    
+
     // Setup CSS2D renderer for name labels
     css2DRenderer = new CSS2DRenderer();
     css2DRenderer.setSize(window.innerWidth, window.innerHeight);
@@ -315,16 +307,16 @@ export function initMultiplayer(gameScene, config, playerMesh, camera, renderer)
     css2DRenderer.domElement.style.top = '0';
     css2DRenderer.domElement.style.pointerEvents = 'none';
     document.getElementById('game-container').appendChild(css2DRenderer.domElement);
-    
+
     // Handle resize for CSS2D renderer
     window.addEventListener('resize', () => {
         css2DRenderer.setSize(window.innerWidth, window.innerHeight);
     });
-    
+
     // Add label to local player
     localPlayerLabel = createNameLabel(localPlayer.name, true);
     localPlayerMesh.add(localPlayerLabel);
-    
+
     // Wait for Echo to be ready
     function setupEcho() {
         if (!window.Echo) {
@@ -332,31 +324,31 @@ export function initMultiplayer(gameScene, config, playerMesh, camera, renderer)
             setTimeout(setupEcho, 100);
             return;
         }
-        
+
         console.log('[Multiplayer] Echo is ready, subscribing to channel: game.' + gameId);
-        
+
         // Join public channel (no auth needed)
         channel = window.Echo.channel(`game.${gameId}`);
-        
+
         // Listen for player joined events
         channel.listen('.player-joined', (data) => {
             console.log('[Multiplayer] 📥 Received player-joined:', data);
             addRemotePlayer(data.player, data.position, data.rotation);
         });
-        
+
         // Listen for player moved events
         channel.listen('.player-moved', (data) => {
             updateRemotePlayer(data.player_id, data.position, data.rotation, data.animation, data.crouching || false);
         });
-        
+
         // Listen for player left events
         channel.listen('.player-left', (data) => {
             console.log('[Multiplayer] 📤 Received player-left:', data);
             removeRemotePlayer(data.player_id);
         });
-        
+
         console.log('[Multiplayer] Event listeners attached, announcing presence...');
-        
+
         // Announce our presence (include socket ID so server can exclude us from broadcast)
         fetch(window.gameConfig?.routes?.join ?? '/projects/cube2/game/join', {
             method: 'POST',
@@ -370,33 +362,37 @@ export function initMultiplayer(gameScene, config, playerMesh, camera, renderer)
                 position: { x: 0, y: 0, z: 0 },
                 rotation: 0,
             }),
-        }).then(response => {
-              console.log('[Multiplayer] Join response status:', response.status);
-              return response.json();
-          })
-          .then(data => {
-              console.log('[Multiplayer] ✅ Joined game successfully!');
-              console.log('[Multiplayer] Existing players:', data.players?.length || 0);
-              // Add existing players
-              if (data.players) {
-                  data.players.forEach(p => {
-                      if (p.player.id !== localPlayer.id) {
-                          console.log('[Multiplayer] Adding existing player:', p.player.name);
-                          addRemotePlayer(p.player, p.position, p.rotation);
-                      }
-                  });
-              }
-          })
-          .catch(err => console.error('[Multiplayer] ❌ Failed to join game:', err));
+        })
+            .then((response) => {
+                console.log('[Multiplayer] Join response status:', response.status);
+                return response.json();
+            })
+            .then((data) => {
+                console.log('[Multiplayer] ✅ Joined game successfully!');
+                console.log('[Multiplayer] Existing players:', data.players?.length || 0);
+                // Add existing players
+                if (data.players) {
+                    data.players.forEach((p) => {
+                        if (p.player.id !== localPlayer.id) {
+                            console.log('[Multiplayer] Adding existing player:', p.player.name);
+                            addRemotePlayer(p.player, p.position, p.rotation);
+                        }
+                    });
+                }
+            })
+            .catch((err) => console.error('[Multiplayer] ❌ Failed to join game:', err));
     }
-    
+
     setupEcho();
-    
+
     // Handle page unload
     window.addEventListener('beforeunload', () => {
-        navigator.sendBeacon(window.gameConfig?.routes?.leave ?? '/projects/cube2/game/leave', JSON.stringify({
-            player_id: localPlayer.id,
-        }));
+        navigator.sendBeacon(
+            window.gameConfig?.routes?.leave ?? '/projects/cube2/game/leave',
+            JSON.stringify({
+                player_id: localPlayer.id,
+            }),
+        );
     });
 }
 

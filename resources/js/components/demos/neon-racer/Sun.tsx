@@ -1,6 +1,6 @@
-import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Mesh } from 'three';
+import { useRef } from 'react';
+import type { Mesh } from 'three';
 import { useGame } from './GameContext';
 
 export default function Sun() {

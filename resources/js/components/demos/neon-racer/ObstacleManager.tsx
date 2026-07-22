@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import Obstacle, { ObstacleType } from './Obstacle';
 import { useGame } from './GameContext';
+import type { ObstacleType } from './Obstacle';
+import Obstacle from './Obstacle';
 
 interface ObstacleData {
     id: number;
@@ -13,25 +14,25 @@ const BASE_OBSTACLE_SPEED = 12;
 
 // Level scaling
 const LEVEL_CONFIG = {
-    1: { 
+    1: {
         speedMultiplier: 1.25,
-        spawnInterval: 2000,     // Bit tighter now
-        mode: 'tutorial',        // Few small obstacles, easy
+        spawnInterval: 2000, // Bit tighter now
+        mode: 'tutorial', // Few small obstacles, easy
     },
-    2: { 
+    2: {
         speedMultiplier: 1.25,
         spawnInterval: 1800,
-        mode: 'normal',          // Complex walls + cylinders
+        mode: 'normal', // Complex walls + cylinders
     },
-    3: { 
+    3: {
         speedMultiplier: 1.67,
         spawnInterval: 1600,
-        mode: 'hard',            // More cylinders, faster
+        mode: 'hard', // More cylinders, faster
     },
-    4: { 
+    4: {
         speedMultiplier: 1.85,
         spawnInterval: 1500,
-        mode: 'triple_wall',     // 3-high walls, gap can be middle (jump through)
+        mode: 'triple_wall', // 3-high walls, gap can be middle (jump through)
     },
 };
 
@@ -65,8 +66,8 @@ export default function ObstacleManager() {
 
             // Level 4+ always use 3-high walls (triple_wall): gap is horizontal opening in one of 3 rows, like wave 3
             if (level >= 4) {
-                const gapSlot = Math.floor(Math.random() * 3);   // which row has the gap (0=bottom, 1=middle, 2=top)
-                const gapIndex = Math.floor(Math.random() * 8);   // 0-7 for horizontal position (same as low_bar)
+                const gapSlot = Math.floor(Math.random() * 3); // which row has the gap (0=bottom, 1=middle, 2=top)
+                const gapIndex = Math.floor(Math.random() * 8); // 0-7 for horizontal position (same as low_bar)
                 newObstacles.push({
                     id: currentId++,
                     position: [0, gapSlot * 8 + gapIndex, SPAWN_Z],
@@ -76,7 +77,7 @@ export default function ObstacleManager() {
                 // LEVEL 1: Few small obstacles - dodge OR jump
                 const roll = Math.random();
                 const xPos = (Math.random() - 0.5) * 12; // Random position
-                
+
                 if (roll < 0.5) {
                     // Small block - can jump or dodge
                     newObstacles.push({
@@ -95,7 +96,7 @@ export default function ObstacleManager() {
             } else if (config.mode === 'normal') {
                 // LEVEL 2: Easy walls (bigger gaps) + some cylinders
                 const roll = Math.random();
-                
+
                 if (roll < 0.7) {
                     const gapIndex = Math.floor(Math.random() * 8);
                     newObstacles.push({
@@ -107,7 +108,7 @@ export default function ObstacleManager() {
                     // 2-3 cylinders
                     const numCylinders = 2 + Math.floor(Math.random() * 2);
                     const usedPositions: number[] = [];
-                    
+
                     for (let i = 0; i < numCylinders; i++) {
                         let xPos: number;
                         let attempts = 0;
@@ -115,7 +116,7 @@ export default function ObstacleManager() {
                             xPos = (Math.random() - 0.5) * 14;
                             attempts++;
                         } while (usedPositions.some((pos) => Math.abs(pos - xPos) < 2.5) && attempts < 10);
-                        
+
                         if (attempts < 10) {
                             usedPositions.push(xPos);
                             newObstacles.push({
@@ -129,7 +130,7 @@ export default function ObstacleManager() {
             } else {
                 // LEVEL 3: Harder walls + more cylinders
                 const roll = Math.random();
-                
+
                 if (roll < 0.6) {
                     const gapIndex = Math.floor(Math.random() * 8);
                     newObstacles.push({
@@ -141,7 +142,7 @@ export default function ObstacleManager() {
                     // 3-5 cylinders
                     const numCylinders = 3 + Math.floor(Math.random() * 3);
                     const usedPositions: number[] = [];
-                    
+
                     for (let i = 0; i < numCylinders; i++) {
                         let xPos: number;
                         let attempts = 0;
@@ -149,7 +150,7 @@ export default function ObstacleManager() {
                             xPos = (Math.random() - 0.5) * 14;
                             attempts++;
                         } while (usedPositions.some((pos) => Math.abs(pos - xPos) < 2.5) && attempts < 10);
-                        
+
                         if (attempts < 10) {
                             usedPositions.push(xPos);
                             newObstacles.push({

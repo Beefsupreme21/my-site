@@ -46,4 +46,3 @@ export default function Music() {
 
     return null; // This component doesn't render anything
 }
-

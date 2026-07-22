@@ -1,6 +1,6 @@
-import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Group } from 'three';
+import { useRef } from 'react';
+import type { Group } from 'three';
 import { useGame } from './GameContext';
 
 export default function Explosion() {
@@ -39,4 +39,3 @@ export default function Explosion() {
         </group>
     );
 }
-

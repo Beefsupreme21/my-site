@@ -1,11 +1,11 @@
 /**
  * Animation System
- * 
+ *
  * Usage:
  *   const animator = new AnimationController(playerMesh);
  *   animator.play('walk');
  *   animator.update(deltaTime); // call each frame
- * 
+ *
  * To add new animations, add a function to the `animations` object below.
  */
 
@@ -26,7 +26,7 @@ function extractLimbs(mesh) {
 /**
  * Animation definitions
  * Each animation is a function: (limbs, time, progress, speed) => void
- * 
+ *
  * - limbs: { body, head, leftArm, rightArm, leftLeg, rightLeg }
  * - time: current time in seconds (for continuous animations)
  * - progress: 0-1 for one-shot animations (jump, attack), null for looping
@@ -38,12 +38,12 @@ const animations = {
      */
     idle: (limbs, time) => {
         const breathe = Math.sin(time * 2) * 0.02;
-        
+
         // Subtle body movement
         if (limbs.body) {
             limbs.body.position.y = 0.6 + breathe;
         }
-        
+
         // Reset limbs to neutral
         if (limbs.leftArm) limbs.leftArm.rotation.x = 0;
         if (limbs.rightArm) limbs.rightArm.rotation.x = 0;
@@ -57,15 +57,15 @@ const animations = {
     walk: (limbs, time) => {
         const speed = 8;
         const swing = Math.sin(time * speed);
-        
+
         // Arm swing (opposite to legs)
         if (limbs.leftArm) limbs.leftArm.rotation.x = swing * 0.3;
         if (limbs.rightArm) limbs.rightArm.rotation.x = -swing * 0.3;
-        
+
         // Leg swing
         if (limbs.leftLeg) limbs.leftLeg.rotation.x = -swing * 0.3;
         if (limbs.rightLeg) limbs.rightLeg.rotation.x = swing * 0.3;
-        
+
         // Body bob
         if (limbs.body) {
             limbs.body.position.y = 0.6 + Math.abs(Math.sin(time * speed * 2)) * 0.05;
@@ -78,20 +78,20 @@ const animations = {
     run: (limbs, time) => {
         const speed = 14;
         const swing = Math.sin(time * speed);
-        
+
         // More exaggerated arm swing
         if (limbs.leftArm) limbs.leftArm.rotation.x = swing * 0.6;
         if (limbs.rightArm) limbs.rightArm.rotation.x = -swing * 0.6;
-        
+
         // More exaggerated leg swing
         if (limbs.leftLeg) limbs.leftLeg.rotation.x = -swing * 0.5;
         if (limbs.rightLeg) limbs.rightLeg.rotation.x = swing * 0.5;
-        
+
         // Bigger body bob
         if (limbs.body) {
             limbs.body.position.y = 0.6 + Math.abs(Math.sin(time * speed * 2)) * 0.08;
         }
-        
+
         // Slight forward lean
         if (limbs.body) {
             limbs.body.rotation.x = 0.1;
@@ -104,40 +104,38 @@ const animations = {
      */
     jump: (limbs, time, progress) => {
         const p = progress ?? 0;
-        
+
         if (p < 0.3) {
             // Launch phase - crouch to spring
             const launchProgress = p / 0.3;
-            
+
             // Arms swing back then up
             if (limbs.leftArm) limbs.leftArm.rotation.x = -launchProgress * 1.2;
             if (limbs.rightArm) limbs.rightArm.rotation.x = -launchProgress * 1.2;
-            
+
             // Legs extend
             if (limbs.leftLeg) limbs.leftLeg.rotation.x = -launchProgress * 0.3;
             if (limbs.rightLeg) limbs.rightLeg.rotation.x = -launchProgress * 0.3;
-            
         } else if (p < 0.7) {
             // Airborne - arms up, legs slightly tucked
             const airProgress = (p - 0.3) / 0.4;
-            
+
             // Arms stay raised
             if (limbs.leftArm) limbs.leftArm.rotation.x = -1.2 + airProgress * 0.3;
             if (limbs.rightArm) limbs.rightArm.rotation.x = -1.2 + airProgress * 0.3;
-            
+
             // Legs tuck slightly at apex
             const tuck = Math.sin(airProgress * Math.PI) * 0.4;
             if (limbs.leftLeg) limbs.leftLeg.rotation.x = tuck;
             if (limbs.rightLeg) limbs.rightLeg.rotation.x = tuck;
-            
         } else {
             // Landing phase - arms come down, legs extend
             const landProgress = (p - 0.7) / 0.3;
-            
+
             // Arms swing down
             if (limbs.leftArm) limbs.leftArm.rotation.x = -0.9 * (1 - landProgress);
             if (limbs.rightArm) limbs.rightArm.rotation.x = -0.9 * (1 - landProgress);
-            
+
             // Legs extend for landing
             if (limbs.leftLeg) limbs.leftLeg.rotation.x = 0.2 * (1 - landProgress);
             if (limbs.rightLeg) limbs.rightLeg.rotation.x = 0.2 * (1 - landProgress);
@@ -150,7 +148,7 @@ const animations = {
      */
     attack: (limbs, time, progress) => {
         const attackPhase = progress ?? 0;
-        
+
         // Right arm swing for attack
         if (limbs.rightArm) {
             if (attackPhase < 0.3) {
@@ -169,7 +167,7 @@ const animations = {
                 limbs.rightArm.rotation.z = -0.15 * (1 - recoveryProgress);
             }
         }
-        
+
         // Body rotation for power
         if (limbs.body) {
             if (attackPhase < 0.5) {

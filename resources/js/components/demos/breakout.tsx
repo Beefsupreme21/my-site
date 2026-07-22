@@ -32,31 +32,14 @@ function createBricks(): Brick[] {
 }
 
 function hitTestBrick(bx: number, by: number, brick: Brick): boolean {
-    return (
-        bx + BALL_R > brick.x &&
-        bx - BALL_R < brick.x + BRICK_W &&
-        by + BALL_R > brick.y &&
-        by - BALL_R < brick.y + BRICK_H
-    );
+    return bx + BALL_R > brick.x && bx - BALL_R < brick.x + BRICK_W && by + BALL_R > brick.y && by - BALL_R < brick.y + BRICK_H;
 }
 
 function hitTestPaddle(px: number, py: number, bx: number, by: number): boolean {
-    return (
-        bx + BALL_R > px &&
-        bx - BALL_R < px + PADDLE_W &&
-        by + BALL_R > py &&
-        by - BALL_R < py + PADDLE_H
-    );
+    return bx + BALL_R > px && bx - BALL_R < px + PADDLE_W && by + BALL_R > py && by - BALL_R < py + PADDLE_H;
 }
 
-const BRICK_COLORS = [
-    'bg-red-500',
-    'bg-amber-500',
-    'bg-emerald-500',
-    'bg-sky-500',
-    'bg-violet-500',
-    'bg-rose-500',
-];
+const BRICK_COLORS = ['bg-red-500', 'bg-amber-500', 'bg-emerald-500', 'bg-sky-500', 'bg-violet-500', 'bg-rose-500'];
 
 export function BreakoutDemo() {
     const [bricks, setBricks] = useState(createBricks);
@@ -95,8 +78,8 @@ export function BreakoutDemo() {
         let raf = 0;
         const tick = () => {
             const { x, y, dx, dy } = ballRef.current;
-            let nx = x + dx;
-            let ny = y + dy;
+            const nx = x + dx;
+            const ny = y + dy;
             let ndx = dx;
             let ndy = dy;
 
@@ -176,34 +159,21 @@ export function BreakoutDemo() {
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-neutral-950 p-6">
-            <div className="flex items-center justify-between gap-4 text-sm text-neutral-300 w-full max-w-[600px]">
+            <div className="flex w-full max-w-[600px] items-center justify-between gap-4 text-sm text-neutral-300">
                 <span className="font-medium tabular-nums">Score: {score}</span>
-                {showPlusTen && <span className="text-amber-400 font-semibold">+{POINTS_PER_BRICK}</span>}
-                {!started && !gameOver && (
-                    <span className="text-amber-400">Move mouse or arrows · Press Space to launch</span>
-                )}
+                {showPlusTen && <span className="font-semibold text-amber-400">+{POINTS_PER_BRICK}</span>}
+                {!started && !gameOver && <span className="text-amber-400">Move mouse or arrows · Press Space to launch</span>}
                 {gameOver === 'win' && <span className="text-emerald-400">You win!</span>}
                 {gameOver === 'lose' && <span className="text-red-400">Game over</span>}
-                <button
-                    type="button"
-                    onClick={reset}
-                    className="rounded bg-neutral-700 px-3 py-1.5 text-white hover:bg-neutral-600"
-                >
+                <button type="button" onClick={reset} className="rounded bg-neutral-700 px-3 py-1.5 text-white hover:bg-neutral-600">
                     Restart
                 </button>
             </div>
-            <div
-                ref={arenaRef}
-                className="relative border-2 border-neutral-600 bg-neutral-800"
-                style={{ width: ARENA_W, height: ARENA_H }}
-            >
-                {bricks.map((brick, i) => (
+            <div ref={arenaRef} className="relative border-2 border-neutral-600 bg-neutral-800" style={{ width: ARENA_W, height: ARENA_H }}>
+                {bricks.map((brick) => (
                     <div
                         key={brick.id}
-                        className={cn(
-                            'absolute border-0',
-                            BRICK_COLORS[Math.floor(brick.y / (BRICK_H + 4)) % BRICK_COLORS.length],
-                        )}
+                        className={cn('absolute border-0', BRICK_COLORS[Math.floor(brick.y / (BRICK_H + 4)) % BRICK_COLORS.length])}
                         style={{
                             left: brick.x,
                             top: brick.y,
@@ -213,7 +183,7 @@ export function BreakoutDemo() {
                     />
                 ))}
                 <div
-                    className="absolute bg-neutral-400 border-0"
+                    className="absolute border-0 bg-neutral-400"
                     style={{
                         left: paddleX,
                         top: PADDLE_Y,
@@ -222,7 +192,7 @@ export function BreakoutDemo() {
                     }}
                 />
                 <div
-                    className="absolute rounded-full bg-white border-0"
+                    className="absolute rounded-full border-0 bg-white"
                     style={{
                         left: ball.x - BALL_R,
                         top: ball.y - BALL_R,

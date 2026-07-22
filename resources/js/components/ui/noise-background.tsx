@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import {
   motion,
   useAnimationFrame,
@@ -9,6 +8,7 @@ import {
   type MotionValue,
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 // Helper component for gradient layers
 function GradientLayer({

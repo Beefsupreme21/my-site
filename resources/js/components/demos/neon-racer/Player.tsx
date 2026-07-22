@@ -1,6 +1,6 @@
-import { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Group } from 'three';
+import { useRef, useEffect } from 'react';
+import type { Group } from 'three';
 import { useGame } from './GameContext';
 
 const MOVE_SPEED = 14;

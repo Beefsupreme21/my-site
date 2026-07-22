@@ -1,11 +1,11 @@
 import { Head, Link } from '@inertiajs/react';
-import { WarpStarfield } from '@/components/ui/warp-starfield';
-import { SkyWithClouds } from '@/components/ui/sky-with-clouds';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { GithubLogo, LinkedInLogo, EmailIcon } from '@/components/logos';
 import { EncryptedText } from '@/components/ui/encrypted-text';
 import { NoiseBackground } from '@/components/ui/noise-background';
 import { ScrollReveal } from '@/components/ui/scroll-reveal';
-import { GithubLogo, LinkedInLogo, EmailIcon } from '@/components/logos';
+import { SkyWithClouds } from '@/components/ui/sky-with-clouds';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { WarpStarfield } from '@/components/ui/warp-starfield';
 import { useTheme } from '@/hooks/use-theme';
 
 export default function Test() {
@@ -21,12 +21,7 @@ export default function Test() {
                     {isDark ? (
                         <>
                             <div className="absolute inset-0 bg-[#0a0a0a]" />
-                            <WarpStarfield
-                                starCount={450}
-                                minSpeed={0.6}
-                                maxSpeed={2.2}
-                                className="absolute inset-0"
-                            />
+                            <WarpStarfield starCount={450} minSpeed={0.6} maxSpeed={2.2} className="absolute inset-0" />
                         </>
                     ) : (
                         <SkyWithClouds className="fixed inset-0" />
@@ -58,11 +53,7 @@ export default function Test() {
                                                 : 'h-48 w-48 flex-shrink-0 overflow-hidden rounded-full shadow-lg ring-4 ring-neutral-300 lg:h-56 lg:w-56'
                                         }
                                     >
-                                        <img
-                                            src="/profile.png"
-                                            alt="Profile"
-                                            className="h-full w-full object-cover"
-                                        />
+                                        <img src="/profile.png" alt="Profile" className="h-full w-full object-cover" />
                                     </div>
                                     <div className="flex items-center justify-center gap-3">
                                         <a
@@ -112,34 +103,27 @@ export default function Test() {
                                         : 'max-w-xl space-y-4 text-center text-lg leading-relaxed text-neutral-600 lg:text-left'
                                 }
                             >
-                                    <p className="text-3xl font-bold lg:text-4xl">
-                                        <EncryptedText
-                                            text="Hey, I'm Cory."
-                                            className="inline"
-                                            encryptedClassName={isDark ? 'text-neutral-500' : 'text-neutral-400'}
-                                            revealedClassName={isDark ? 'text-white' : 'text-neutral-900'}
-                                            revealDelayMs={120}
-                                            flipDelayMs={80}
-                                        />
-                                    </p>
-                                    <p>
-                                        Welcome to my site! I&apos;m a Laravel developer who enjoys building things with the TALL stack:
-                                        Tailwind, Alpine, Laravel, and Livewire.
-                                    </p>
-                                    <p>
-                                        I use this site to share projects I&apos;ve built for fun and learning. Feel free to try them out
-                                        below!
-                                    </p>
+                                <p className="text-3xl font-bold lg:text-4xl">
+                                    <EncryptedText
+                                        text="Hey, I'm Cory."
+                                        className="inline"
+                                        encryptedClassName={isDark ? 'text-neutral-500' : 'text-neutral-400'}
+                                        revealedClassName={isDark ? 'text-white' : 'text-neutral-900'}
+                                        revealDelayMs={120}
+                                        flipDelayMs={80}
+                                    />
+                                </p>
+                                <p>
+                                    Welcome to my site! I&apos;m a Laravel developer who enjoys building things with the TALL stack: Tailwind, Alpine,
+                                    Laravel, and Livewire.
+                                </p>
+                                <p>I use this site to share projects I&apos;ve built for fun and learning. Feel free to try them out below!</p>
                             </div>
                         </div>
                         <div className="mt-12 flex justify-center">
                             <NoiseBackground
                                 containerClassName="w-fit rounded-full p-[6px]"
-                                gradientColors={[
-                                    'rgb(var(--gradient-from))',
-                                    'rgb(var(--gradient-mid))',
-                                    'rgb(var(--gradient-to))',
-                                ]}
+                                gradientColors={['rgb(var(--gradient-from))', 'rgb(var(--gradient-mid))', 'rgb(var(--gradient-to))']}
                                 noiseIntensity={0.25}
                                 speed={0.12}
                             >
@@ -162,32 +146,15 @@ export default function Test() {
                 <section className="px-6 py-24">
                     <ScrollReveal direction="up" delay={0.1}>
                         <div className="mx-auto max-w-4xl">
-                            <h2
-                            className={
-                                isDark ? 'mb-8 text-3xl font-bold text-white' : 'mb-8 text-3xl font-bold text-neutral-900'
-                            }
-                        >
-                            Content
-                        </h2>
-                        <p
-                            className={
-                                isDark ? 'text-neutral-400 leading-relaxed' : 'text-neutral-600 leading-relaxed'
-                            }
-                        >
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat.
-                        </p>
-                        <p
-                            className={
-                                isDark ? 'mt-4 text-neutral-400 leading-relaxed' : 'mt-4 text-neutral-600 leading-relaxed'
-                            }
-                        >
-                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-                            dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </p>
+                            <h2 className={isDark ? 'mb-8 text-3xl font-bold text-white' : 'mb-8 text-3xl font-bold text-neutral-900'}>Content</h2>
+                            <p className={isDark ? 'leading-relaxed text-neutral-400' : 'leading-relaxed text-neutral-600'}>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna
+                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            </p>
+                            <p className={isDark ? 'mt-4 leading-relaxed text-neutral-400' : 'mt-4 leading-relaxed text-neutral-600'}>
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
                         </div>
                     </ScrollReveal>
                 </section>
@@ -196,21 +163,13 @@ export default function Test() {
                 <section className="px-6 pb-32">
                     <ScrollReveal direction="up" delay={0.1}>
                         <div className="mx-auto max-w-4xl">
-                            <h2
-                            className={
-                                isDark ? 'mb-8 text-3xl font-bold text-white' : 'mb-8 text-3xl font-bold text-neutral-900'
-                            }
-                        >
-                            More Content
-                        </h2>
-                        <p
-                            className={
-                                isDark ? 'text-neutral-400 leading-relaxed' : 'text-neutral-600 leading-relaxed'
-                            }
-                        >
-                            Scrolling over static stars—they stay fixed in the viewport while the
-                            content moves. Toggle the sun/moon for day or night.
-                        </p>
+                            <h2 className={isDark ? 'mb-8 text-3xl font-bold text-white' : 'mb-8 text-3xl font-bold text-neutral-900'}>
+                                More Content
+                            </h2>
+                            <p className={isDark ? 'leading-relaxed text-neutral-400' : 'leading-relaxed text-neutral-600'}>
+                                Scrolling over static stars—they stay fixed in the viewport while the content moves. Toggle the sun/moon for day or
+                                night.
+                            </p>
                         </div>
                     </ScrollReveal>
                 </section>

@@ -1,10 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
-import { ThreeJSGameDemo } from '@/components/demos/threejs-game';
-import { SimpleDemo } from '@/components/demos/simple-demo';
-import { KanbanDemo } from '@/components/demos/kanban';
-import { WordleDemo } from '@/components/demos/wordle';
-import { SnakeDemo } from '@/components/demos/snake';
 import { BlackjackDemo } from '@/components/demos/blackjack';
+import { KanbanDemo } from '@/components/demos/kanban';
+import { SimpleDemo } from '@/components/demos/simple-demo';
+import { SnakeDemo } from '@/components/demos/snake';
+import { ThreeJSGameDemo } from '@/components/demos/threejs-game';
+import { WordleDemo } from '@/components/demos/wordle';
 
 interface ProjectDemoProps {
     project: {
@@ -26,9 +26,7 @@ const demoComponents: Record<string, React.ComponentType> = {
 };
 
 export default function ProjectDemo({ project }: ProjectDemoProps) {
-    const DemoComponent = project.demoComponent
-        ? demoComponents[project.demoComponent]
-        : null;
+    const DemoComponent = project.demoComponent ? demoComponents[project.demoComponent] : null;
 
     return (
         <>
@@ -36,7 +34,7 @@ export default function ProjectDemo({ project }: ProjectDemoProps) {
             <div className="relative min-h-screen bg-black text-white">
                 <Link
                     href="/"
-                    className="absolute left-6 top-6 z-40 inline-flex items-center text-sm text-neutral-400 transition-colors hover:text-neutral-100"
+                    className="absolute top-6 left-6 z-40 inline-flex items-center text-sm text-neutral-400 transition-colors hover:text-neutral-100"
                 >
                     ← Back to Home
                 </Link>

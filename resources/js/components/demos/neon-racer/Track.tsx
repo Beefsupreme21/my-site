@@ -1,6 +1,7 @@
-import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Mesh, RepeatWrapping, CanvasTexture } from 'three';
+import { useRef, useMemo } from 'react';
+import type { Mesh } from 'three';
+import { RepeatWrapping, CanvasTexture } from 'three';
 import { useGame } from './GameContext';
 
 const BASE_SPEED = 12;

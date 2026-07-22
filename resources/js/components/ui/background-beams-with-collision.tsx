@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
 import React, { useRef, useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 export const BackgroundBeamsWithCollision = ({
   children,
@@ -71,10 +71,7 @@ const CollisionMechanism = ({
 
   const {
     initialX = 0,
-    translateX = 0,
     initialY = "-200px",
-    translateY = "1800px",
-    rotate = 0,
     className,
     duration = 8,
     delay = 0,

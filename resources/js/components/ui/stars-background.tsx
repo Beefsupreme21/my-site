@@ -1,12 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import React, {
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
+import { cn } from "@/lib/utils";
 
 interface StarProps {
   x: number;
@@ -73,9 +73,10 @@ export const StarsBackground: React.FC<StarsBackgroundProps> = ({
   );
 
   useEffect(() => {
+    const canvas = canvasRef.current;
+
     const updateStars = () => {
-      if (canvasRef.current) {
-        const canvas = canvasRef.current;
+      if (canvas) {
         const { width, height } = canvas.getBoundingClientRect();
         canvas.width = width;
         canvas.height = height;
@@ -86,13 +87,13 @@ export const StarsBackground: React.FC<StarsBackgroundProps> = ({
     updateStars();
 
     const resizeObserver = new ResizeObserver(updateStars);
-    if (canvasRef.current) {
-      resizeObserver.observe(canvasRef.current);
+    if (canvas) {
+      resizeObserver.observe(canvas);
     }
 
     return () => {
-      if (canvasRef.current) {
-        resizeObserver.unobserve(canvasRef.current);
+      if (canvas) {
+        resizeObserver.unobserve(canvas);
       }
     };
   }, [generateStars]);

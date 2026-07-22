@@ -1,4 +1,5 @@
-import { createContext, useContext, useRef, useState, ReactNode, useCallback } from 'react';
+import type { ReactNode } from 'react';
+import { createContext, useContext, useRef, useState, useCallback } from 'react';
 import { Vector3 } from 'three';
 
 interface GameContextType {
@@ -57,12 +58,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
         setIsBoosting(boosting);
     }, []);
 
-    const triggerExplosion = useCallback((position: Vector3) => {
-        if (!isGameOver) {
-            setExplosionPosition(position.clone());
-            setIsGameOver(true);
-        }
-    }, [isGameOver]);
+    const triggerExplosion = useCallback(
+        (position: Vector3) => {
+            if (!isGameOver) {
+                setExplosionPosition(position.clone());
+                setIsGameOver(true);
+            }
+        },
+        [isGameOver],
+    );
 
     const restartGame = useCallback(() => {
         setIsGameOver(false);
@@ -85,11 +89,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
         const gatesNeeded = getGatesForLevel(level);
         setGatesCollected((prev) => {
             const newCount = prev + 1;
-            
+
             // Show popup
             setGatePopup(`${newCount}/${gatesNeeded}`);
             setTimeout(() => setGatePopup(null), 1000);
-            
+
             if (newCount >= gatesNeeded) {
                 // Level up!
                 setShowLevelUp(true);

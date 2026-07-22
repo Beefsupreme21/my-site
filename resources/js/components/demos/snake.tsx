@@ -26,10 +26,8 @@ function newFood(snake: { x: number; y: number }[]): { x: number; y: number } {
 }
 
 export function SnakeDemo() {
-    const [snake, setSnake] = useState<{ x: number; y: number }[]>([
-        { x: Math.floor(COLS / 2), y: Math.floor(ROWS / 2) },
-    ]);
-    const [dir, setDir] = useState<Dir>('right');
+    const [snake, setSnake] = useState<{ x: number; y: number }[]>([{ x: Math.floor(COLS / 2), y: Math.floor(ROWS / 2) }]);
+    const [, setDir] = useState<Dir>('right');
     const [food, setFood] = useState(() => newFood([{ x: Math.floor(COLS / 2), y: Math.floor(ROWS / 2) }]));
     const [gameOver, setGameOver] = useState(false);
     const [score, setScore] = useState(0);
@@ -135,10 +133,7 @@ export function SnakeDemo() {
         return () => clearTimeout(t);
     }, [showPlusTen]);
 
-    const isSnake = useCallback(
-        (x: number, y: number) => snake.some((s) => s.x === x && s.y === y),
-        [snake],
-    );
+    const isSnake = useCallback((x: number, y: number) => snake.some((s) => s.x === x && s.y === y), [snake]);
     const isHead = useCallback((x: number, y: number) => snake[0]?.x === x && snake[0]?.y === y, [snake]);
 
     const cellSize = 20;
@@ -148,20 +143,10 @@ export function SnakeDemo() {
         <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-neutral-950 p-6">
             <div className="flex items-center justify-between gap-4 text-sm text-neutral-300">
                 <span className="font-medium tabular-nums">Score: {score}</span>
-                {showPlusTen && (
-                    <span className="text-amber-400 font-semibold">+{POINTS_PER_FOOD}</span>
-                )}
-                {!started && !gameOver && (
-                    <span className="text-amber-400">Press any arrow key to start</span>
-                )}
-                {gameOver && (
-                    <span className="text-red-400">Game over — press Restart</span>
-                )}
-                <button
-                    type="button"
-                    onClick={reset}
-                    className="rounded bg-neutral-700 px-3 py-1.5 text-white hover:bg-neutral-600"
-                >
+                {showPlusTen && <span className="font-semibold text-amber-400">+{POINTS_PER_FOOD}</span>}
+                {!started && !gameOver && <span className="text-amber-400">Press any arrow key to start</span>}
+                {gameOver && <span className="text-red-400">Game over — press Restart</span>}
+                <button type="button" onClick={reset} className="rounded bg-neutral-700 px-3 py-1.5 text-white hover:bg-neutral-600">
                     Restart
                 </button>
             </div>
