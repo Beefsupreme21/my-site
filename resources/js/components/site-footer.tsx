@@ -7,10 +7,7 @@ export function SiteFooter() {
                 <p className="text-lg font-semibold text-white">Cory S.</p>
 
                 <div className="mt-2 space-y-1 text-sm">
-                    <a
-                        href="mailto:beefsupreme21@hotmail.com"
-                        className="block text-brand transition-colors hover:text-brand-mid"
-                    >
+                    <a href="mailto:beefsupreme21@hotmail.com" className="block text-brand transition-colors hover:text-brand-mid">
                         beefsupreme21@hotmail.com
                     </a>
                     <p className="text-neutral-500">

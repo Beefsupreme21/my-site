@@ -31,34 +31,21 @@ export default function MultiplayerDemo({ lobbies, current_lobby_id, flash }: Mu
     return (
         <>
             <Head title="Multiplayer Lobby - Demo" />
-            <div className="min-h-screen bg-neutral-950 text-white p-6">
-                <Link
-                    href="/"
-                    className="inline-block mb-6 text-sm text-neutral-400 hover:text-white"
-                >
+            <div className="min-h-screen bg-neutral-950 p-6 text-white">
+                <Link href="/" className="mb-6 inline-block text-sm text-neutral-400 hover:text-white">
                     ← Back to Home
                 </Link>
 
-                <h1 className="text-2xl font-semibold mb-2">Multiplayer Lobby</h1>
-                <p className="text-neutral-400 text-sm mb-6">
-                    Start a lobby and share the code, or join one with a code. Max 2 players per lobby.
-                </p>
+                <h1 className="mb-2 text-2xl font-semibold">Multiplayer Lobby</h1>
+                <p className="mb-6 text-sm text-neutral-400">Start a lobby and share the code, or join one with a code. Max 2 players per lobby.</p>
 
-                {flash?.error && (
-                    <p className="mb-4 rounded bg-red-900/40 text-red-300 px-4 py-2 text-sm">
-                        {flash.error}
-                    </p>
-                )}
+                {flash?.error && <p className="mb-4 rounded bg-red-900/40 px-4 py-2 text-sm text-red-300">{flash.error}</p>}
                 {flash?.created_code && (
-                    <p className="mb-4 rounded bg-emerald-900/40 text-emerald-300 px-4 py-2 text-sm">
+                    <p className="mb-4 rounded bg-emerald-900/40 px-4 py-2 text-sm text-emerald-300">
                         Lobby created! Share this code: <strong>{flash.created_code}</strong>
                     </p>
                 )}
-                {flash?.joined && (
-                    <p className="mb-4 rounded bg-emerald-900/40 text-emerald-300 px-4 py-2 text-sm">
-                        Joined lobby {flash.joined}.
-                    </p>
-                )}
+                {flash?.joined && <p className="mb-4 rounded bg-emerald-900/40 px-4 py-2 text-sm text-emerald-300">Joined lobby {flash.joined}.</p>}
 
                 <div className="mb-8 flex flex-wrap items-end gap-4">
                     <form
@@ -69,7 +56,7 @@ export default function MultiplayerDemo({ lobbies, current_lobby_id, flash }: Mu
                         className="flex flex-wrap items-end gap-3"
                     >
                         <label className="block">
-                            <span className="block text-xs text-neutral-500 mb-1">Your name</span>
+                            <span className="mb-1 block text-xs text-neutral-500">Your name</span>
                             <input
                                 type="text"
                                 value={createForm.data.name}
@@ -88,13 +75,11 @@ export default function MultiplayerDemo({ lobbies, current_lobby_id, flash }: Mu
                         </button>
                     </form>
                 </div>
-                <p className="text-neutral-500 text-xs mb-4">
-                    Use the same name above when joining a lobby from another browser.
-                </p>
+                <p className="mb-4 text-xs text-neutral-500">Use the same name above when joining a lobby from another browser.</p>
 
-                <h2 className="text-lg font-medium mb-3">Lobbies</h2>
+                <h2 className="mb-3 text-lg font-medium">Lobbies</h2>
                 {lobbies.length === 0 ? (
-                    <p className="text-neutral-500 text-sm">No lobbies yet. Start one above.</p>
+                    <p className="text-sm text-neutral-500">No lobbies yet. Start one above.</p>
                 ) : (
                     <ul className="space-y-3">
                         {lobbies.map((lobby) => (
@@ -111,22 +96,15 @@ export default function MultiplayerDemo({ lobbies, current_lobby_id, flash }: Mu
                                             {lobby.code}
                                         </Link>
                                     ) : (
-                                        <span className="font-mono font-semibold text-emerald-400">
-                                            {lobby.code}
-                                        </span>
+                                        <span className="font-mono font-semibold text-emerald-400">{lobby.code}</span>
                                     )}
-                                    <span className="text-neutral-400 text-sm ml-3">
+                                    <span className="ml-3 text-sm text-neutral-400">
                                         {lobby.player_count}/{lobby.max_players} players
-                                        {lobby.players.length > 0 && (
-                                            <> — {lobby.players.map((p) => p.name).join(', ')}</>
-                                        )}
+                                        {lobby.players.length > 0 && <> — {lobby.players.map((p) => p.name).join(', ')}</>}
                                     </span>
                                 </div>
                                 {current_lobby_id === lobby.id ? (
-                                    <Link
-                                        href={`/lobbies/${lobby.id}`}
-                                        className="text-sm text-emerald-400 hover:text-emerald-300 hover:underline"
-                                    >
+                                    <Link href={`/lobbies/${lobby.id}`} className="text-sm text-emerald-400 hover:text-emerald-300 hover:underline">
                                         Open
                                     </Link>
                                 ) : lobby.status === 'open' ? (

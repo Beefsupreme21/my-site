@@ -1,7 +1,21 @@
 import { useGame } from './GameContext';
 
 export default function GameOverlay() {
-    const { isGameStarted, isGameOver, score, level, gatesCollected, gatesNeeded, showLevelUp, gatePopup, waveHint, volume, setVolume, startGame, restartGame } = useGame();
+    const {
+        isGameStarted,
+        isGameOver,
+        score,
+        level,
+        gatesCollected,
+        gatesNeeded,
+        showLevelUp,
+        gatePopup,
+        waveHint,
+        volume,
+        setVolume,
+        startGame,
+        restartGame,
+    } = useGame();
 
     return (
         <>
@@ -9,7 +23,7 @@ export default function GameOverlay() {
             {!isGameStarted && (
                 <div className="absolute inset-0 z-30 flex items-center justify-center">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-                    
+
                     <div className="relative flex flex-col items-center">
                         <h1
                             className="mb-4 font-mono text-8xl font-black tracking-widest text-cyan-400"
@@ -19,14 +33,12 @@ export default function GameOverlay() {
                         >
                             NEON RACER
                         </h1>
-                        
-                        <p className="mb-12 font-mono text-xl text-white/60">
-                            Jump, duck, and dodge your way through!
-                        </p>
-                        
+
+                        <p className="mb-12 font-mono text-xl text-white/60">Jump, duck, and dodge your way through!</p>
+
                         <button
                             onClick={startGame}
-                            className="group relative overflow-hidden rounded-lg border-2 border-cyan-500/50 bg-cyan-500/10 px-12 py-5 font-mono text-2xl font-bold uppercase tracking-widest text-cyan-400 transition-all duration-300 hover:border-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 hover:scale-105"
+                            className="group relative overflow-hidden rounded-lg border-2 border-cyan-500/50 bg-cyan-500/10 px-12 py-5 font-mono text-2xl font-bold tracking-widest text-cyan-400 uppercase transition-all duration-300 hover:scale-105 hover:border-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300"
                             style={{
                                 boxShadow: '0 0 30px rgba(0, 255, 255, 0.3)',
                             }}
@@ -34,20 +46,26 @@ export default function GameOverlay() {
                             <span className="relative z-10">Start Game</span>
                             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
                         </button>
-                        
+
                         <div className="mt-12 flex gap-8 text-center font-mono text-sm text-white/40">
-                            <div><kbd className="rounded bg-white/10 px-2 py-1">A/D</kbd> Move</div>
-                            <div><kbd className="rounded bg-white/10 px-2 py-1">W/↑</kbd> Boost</div>
-                            <div><kbd className="rounded bg-white/10 px-2 py-1">SPACE</kbd> Jump</div>
+                            <div>
+                                <kbd className="rounded bg-white/10 px-2 py-1">A/D</kbd> Move
+                            </div>
+                            <div>
+                                <kbd className="rounded bg-white/10 px-2 py-1">W/↑</kbd> Boost
+                            </div>
+                            <div>
+                                <kbd className="rounded bg-white/10 px-2 py-1">SPACE</kbd> Jump
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
 
             {/* Volume Control - below Back to Home, always visible */}
-            <div className="absolute left-6 top-14 z-30">
+            <div className="absolute top-14 left-6 z-30">
                 <div className="rounded-lg bg-black/50 px-4 py-3 backdrop-blur-sm">
-                    <p className="font-mono text-xs uppercase tracking-widest text-white/50 mb-2">Volume</p>
+                    <p className="mb-2 font-mono text-xs tracking-widest text-white/50 uppercase">Volume</p>
                     <div className="flex items-center gap-3">
                         <input
                             type="range"
@@ -56,14 +74,12 @@ export default function GameOverlay() {
                             step="0.01"
                             value={volume}
                             onChange={(e) => setVolume(parseFloat(e.target.value))}
-                            className="w-24 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+                            className="h-1 w-24 cursor-pointer appearance-none rounded-lg bg-white/20 accent-cyan-400"
                             style={{
                                 background: `linear-gradient(to right, #00ffff 0%, #00ffff ${volume * 100}%, rgba(255,255,255,0.2) ${volume * 100}%, rgba(255,255,255,0.2) 100%)`,
                             }}
                         />
-                        <span className="font-mono text-sm text-cyan-400 w-10 text-right">
-                            {Math.round(volume * 100)}%
-                        </span>
+                        <span className="w-10 text-right font-mono text-sm text-cyan-400">{Math.round(volume * 100)}%</span>
                     </div>
                 </div>
             </div>
@@ -71,13 +87,13 @@ export default function GameOverlay() {
             {/* Wave hint - upper third, e.g. "Hold up to boost!" at start of wave 1, fades away */}
             {waveHint && isGameStarted && !isGameOver && (
                 <div
-                    className="absolute inset-x-0 top-[22%] z-15 flex justify-center pointer-events-none"
+                    className="pointer-events-none absolute inset-x-0 top-[22%] z-15 flex justify-center"
                     style={{
                         animation: 'wave-hint-fade 3s ease-out forwards',
                     }}
                 >
                     <p
-                        className="font-mono text-lg tracking-wide text-cyan-300/95 px-4 py-2 rounded-lg bg-black/40 backdrop-blur-sm"
+                        className="rounded-lg bg-black/40 px-4 py-2 font-mono text-lg tracking-wide text-cyan-300/95 backdrop-blur-sm"
                         style={{
                             textShadow: '0 0 12px rgba(0, 255, 255, 0.5)',
                         }}
@@ -89,9 +105,9 @@ export default function GameOverlay() {
 
             {/* Gate Popup - center, e.g. "2/4" when passing through gate */}
             {gatePopup && !isGameOver && (
-                <div className="absolute inset-x-0 top-[42%] z-15 flex justify-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-x-0 top-[42%] z-15 flex justify-center">
                     <div
-                        className="font-mono text-6xl font-black tracking-widest text-green-400 animate-bounce"
+                        className="animate-bounce font-mono text-6xl font-black tracking-widest text-green-400"
                         style={{
                             textShadow: '0 0 20px #00ff00, 0 0 40px #00ff00, 0 0 60px #00ff00',
                         }}
@@ -103,33 +119,33 @@ export default function GameOverlay() {
 
             {/* Score and level display - only when game started */}
             {isGameStarted && (
-            <div className="absolute right-6 top-6 z-10">
-                <div className="rounded-lg bg-black/50 px-4 py-3 backdrop-blur-sm">
-                    {/* Level */}
-                    <p className="font-mono text-xs uppercase tracking-widest text-white/50">Level</p>
-                    <p className="font-mono text-xl font-bold text-yellow-400">{level}</p>
-                    
-                    {/* Score */}
-                    <p className="mt-2 font-mono text-xs uppercase tracking-widest text-white/50">Score</p>
-                    <p className="font-mono text-2xl font-bold text-cyan-400">{score}</p>
-                    
-                    {/* Gates progress */}
-                    <div className="mt-3 border-t border-white/10 pt-3">
-                        <p className="font-mono text-xs uppercase tracking-widest text-white/50">Gates</p>
-                        <p className="font-mono text-lg font-bold text-green-400">
-                            {gatesCollected} / {gatesNeeded}
-                        </p>
+                <div className="absolute top-6 right-6 z-10">
+                    <div className="rounded-lg bg-black/50 px-4 py-3 backdrop-blur-sm">
+                        {/* Level */}
+                        <p className="font-mono text-xs tracking-widest text-white/50 uppercase">Level</p>
+                        <p className="font-mono text-xl font-bold text-yellow-400">{level}</p>
+
+                        {/* Score */}
+                        <p className="mt-2 font-mono text-xs tracking-widest text-white/50 uppercase">Score</p>
+                        <p className="font-mono text-2xl font-bold text-cyan-400">{score}</p>
+
+                        {/* Gates progress */}
+                        <div className="mt-3 border-t border-white/10 pt-3">
+                            <p className="font-mono text-xs tracking-widest text-white/50 uppercase">Gates</p>
+                            <p className="font-mono text-lg font-bold text-green-400">
+                                {gatesCollected} / {gatesNeeded}
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
             )}
 
             {/* Level Up Celebration - lower third so it doesn't overlap gate popup / wave hint */}
             {showLevelUp && (
-                <div className="absolute inset-x-0 top-[52%] z-20 flex justify-center pointer-events-none">
+                <div className="pointer-events-none absolute inset-x-0 top-[52%] z-20 flex justify-center">
                     <div className="text-center">
                         <h1
-                            className="font-mono text-6xl font-black tracking-widest text-yellow-400 animate-pulse"
+                            className="animate-pulse font-mono text-6xl font-black tracking-widest text-yellow-400"
                             style={{
                                 textShadow: '0 0 20px #ffaa00, 0 0 40px #ffaa00, 0 0 60px #ff8800',
                             }}
@@ -160,14 +176,12 @@ export default function GameOverlay() {
                         </h1>
 
                         {/* Subtitle */}
-                        <p className="mb-8 font-mono text-lg tracking-wide text-white/60">
-                            Your ship has been destroyed
-                        </p>
+                        <p className="mb-8 font-mono text-lg tracking-wide text-white/60">Your ship has been destroyed</p>
 
                         {/* Final stats */}
                         <div className="mb-8 flex gap-8 text-center">
                             <div>
-                                <p className="font-mono text-sm uppercase tracking-widest text-white/40">Final Score</p>
+                                <p className="font-mono text-sm tracking-widest text-white/40 uppercase">Final Score</p>
                                 <p
                                     className="font-mono text-5xl font-bold text-cyan-400"
                                     style={{
@@ -178,7 +192,7 @@ export default function GameOverlay() {
                                 </p>
                             </div>
                             <div>
-                                <p className="font-mono text-sm uppercase tracking-widest text-white/40">Level Reached</p>
+                                <p className="font-mono text-sm tracking-widest text-white/40 uppercase">Level Reached</p>
                                 <p
                                     className="font-mono text-5xl font-bold text-yellow-400"
                                     style={{
@@ -193,7 +207,7 @@ export default function GameOverlay() {
                         {/* Restart button */}
                         <button
                             onClick={restartGame}
-                            className="group relative overflow-hidden rounded-lg border-2 border-cyan-500/50 bg-cyan-500/10 px-8 py-4 font-mono text-lg font-bold uppercase tracking-widest text-cyan-400 transition-all duration-300 hover:border-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300"
+                            className="group relative overflow-hidden rounded-lg border-2 border-cyan-500/50 bg-cyan-500/10 px-8 py-4 font-mono text-lg font-bold tracking-widest text-cyan-400 uppercase transition-all duration-300 hover:border-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300"
                             style={{
                                 boxShadow: '0 0 20px rgba(0, 255, 255, 0.2)',
                             }}
@@ -210,4 +224,3 @@ export default function GameOverlay() {
         </>
     );
 }
-

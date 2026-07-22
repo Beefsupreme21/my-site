@@ -1,13 +1,13 @@
 import './bootstrap';
 import * as THREE from 'three';
-import { createScene, setupLighting, createGround, getTileGrid, setTileGridColor } from './scene';
-import { startWave, checkTileStep, resetGame } from './game';
-import { createCharacterMesh, createPlayerState, updatePlayerColor, applyCrouch } from './player';
-import { setupControls, updatePlayerMovement } from './controls';
-import { setupCamera, updateCamera } from './camera';
 import { AnimationController } from './animations';
-import { initMultiplayer, updateRemotePlayers, broadcastPosition, updateNameLabels, setAnimation, setCrouching } from './multiplayer';
+import { setupCamera, updateCamera } from './camera';
+import { setupControls, updatePlayerMovement } from './controls';
 import { createDustEffect, emitDust, updateDust } from './effects';
+import { startWave, checkTileStep, resetGame } from './game';
+import { initMultiplayer, updateRemotePlayers, broadcastPosition, updateNameLabels, setAnimation, setCrouching } from './multiplayer';
+import { createCharacterMesh, createPlayerState, updatePlayerColor, applyCrouch } from './player';
+import { createScene, setupLighting, createGround } from './scene';
 
 let gameStarted = false;
 
@@ -17,112 +17,112 @@ document.addEventListener('DOMContentLoaded', () => {
     const joinBtn = document.getElementById('join-btn');
     const nameInput = document.getElementById('player-name-input');
     const colorPicker = document.getElementById('color-picker');
-    
+
     if (!container) return;
 
     // Pre-fill name input with default from server
     if (window.gameConfig?.player?.name) {
         nameInput.value = window.gameConfig.player.name;
     }
-    
+
     // Handle color selection (use saved color from server)
     let selectedColor = window.gameConfig?.player?.color || '#e94560';
     colorPicker.addEventListener('click', (e) => {
         const colorOption = e.target.closest('.color-option');
         if (!colorOption) return;
-        
+
         // Update selected state
-        colorPicker.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+        colorPicker.querySelectorAll('.color-option').forEach((opt) => opt.classList.remove('selected'));
         colorOption.classList.add('selected');
         selectedColor = colorOption.dataset.color;
     });
-    
+
     // Focus input
     nameInput.focus();
-    
+
     // Handle enter key on input
     nameInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             startGame();
         }
     });
-    
+
     // Handle join button click
     joinBtn.addEventListener('click', startGame);
-    
+
     // Scene setup (initialize but don't start game loop yet)
     const scene = createScene();
     setupLighting(scene);
     createGround(scene);
-    
+
     const camera = setupCamera(container);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
-    
+
     // Player (create with server-provided color)
     const initialColor = window.gameConfig?.player?.color || '#e94560';
     const player = createCharacterMesh(initialColor);
     scene.add(player);
     const playerState = createPlayerState();
-    
+
     // Animation controller
     const animator = new AnimationController(player);
-    
+
     // Dust effect for sprinting
     const dustEffect = createDustEffect();
     player.add(dustEffect);
     dustEffect.position.set(0, 0, 0); // At feet level
-    
+
     // Controls
     const keys = setupControls();
-    
+
     // Track F key press (prevent spam)
     let fKeyPressed = false;
     let fKeyJustPressed = false;
-    
+
     document.addEventListener('keydown', (e) => {
         if (e.key.toLowerCase() === 'f' && !fKeyPressed) {
             fKeyPressed = true;
             fKeyJustPressed = true;
         }
     });
-    
+
     document.addEventListener('keyup', (e) => {
         if (e.key.toLowerCase() === 'f') {
             fKeyPressed = false;
         }
     });
-    
+
     // Animation loop
     const clock = new THREE.Clock();
-    
+
     function animate() {
         requestAnimationFrame(animate);
-        
+
         if (!gameStarted) {
             renderer.render(scene, camera);
             return;
         }
-        
+
         const deltaTime = clock.getDelta();
-        
+
         // Update movement
         const { isMoving, isJumping, justJumped, isSprinting, isCrouching } = updatePlayerMovement(keys, playerState, deltaTime);
-        
+
         // Update player mesh
         player.position.copy(playerState.position);
         player.rotation.y = playerState.rotation;
-        
+
         // Check if player stepped on a target tile
         if (gameStarted) {
             checkTileStep(playerState.position);
         }
-        
+
         // Apply crouch pose
         applyCrouch(player, isCrouching, deltaTime);
         setCrouching(isCrouching); // Broadcast crouch state
-        
+
         // Update animation based on state
         if (justJumped) {
             // Start jump animation (one-shot)
@@ -144,33 +144,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         animator.update(deltaTime);
-        
+
         // Emit dust continuously while sprinting and moving
         if (isSprinting && isMoving && !isJumping) {
-            const moveDirection = new THREE.Vector3(
-                Math.sin(playerState.rotation),
-                0,
-                Math.cos(playerState.rotation)
-            );
-            
+            const moveDirection = new THREE.Vector3(Math.sin(playerState.rotation), 0, Math.cos(playerState.rotation));
+
             // Position dust further behind the player (opposite to movement direction)
             const backwardOffset = 0.8; // Distance behind player (increased from 0.3)
             const footPosition = new THREE.Vector3(
                 playerState.position.x - moveDirection.x * backwardOffset,
                 playerState.position.y - 0.4, // At feet level
-                playerState.position.z - moveDirection.z * backwardOffset
+                playerState.position.z - moveDirection.z * backwardOffset,
             );
-            
+
             // Emit dust every frame while sprinting (deltaTime will naturally throttle it)
             emitDust(dustEffect, footPosition, moveDirection, deltaTime * 30);
         }
-        
+
         // Update dust effect
         updateDust(dustEffect, deltaTime);
-        
+
         // Update camera
         updateCamera(camera, playerState, player);
-        
+
         // Check for nearby interactables and show prompt
         let nearInteractable = false;
         if (gameStarted) {
@@ -180,20 +176,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     interactables.push(object);
                 }
             });
-            
+
             // Check if player is near any interactable
             for (const interactable of interactables) {
                 const distance = playerState.position.distanceTo(
-                    new THREE.Vector3(interactable.position.x, playerState.position.y, interactable.position.z)
+                    new THREE.Vector3(interactable.position.x, playerState.position.y, interactable.position.z),
                 );
-                
+
                 if (distance <= interactable.userData.interactionRange) {
                     nearInteractable = true;
                     break;
                 }
             }
         }
-        
+
         // Show/hide interaction prompt
         let promptElement = document.getElementById('interaction-prompt');
         if (nearInteractable) {
@@ -226,11 +222,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 promptElement.style.display = 'none';
             }
         }
-        
+
         // Handle interactions (F key)
         if (fKeyJustPressed && gameStarted) {
             fKeyJustPressed = false;
-            
+
             // Find all interactable objects in scene
             const interactables = [];
             scene.traverse((object) => {
@@ -238,17 +234,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     interactables.push(object);
                 }
             });
-            
+
             // Check if player is near any interactable
             for (const interactable of interactables) {
                 const distance = playerState.position.distanceTo(
-                    new THREE.Vector3(interactable.position.x, playerState.position.y, interactable.position.z)
+                    new THREE.Vector3(interactable.position.x, playerState.position.y, interactable.position.z),
                 );
-                
+
                 if (distance <= interactable.userData.interactionRange) {
                     // Player is close enough to interact
                     console.log('[Interaction] Button activated!');
-                    
+
                     // Change button appearance (glow)
                     const buttonTop = interactable.getObjectByName('buttonTop');
                     if (buttonTop) {
@@ -257,47 +253,47 @@ document.addEventListener('DOMContentLoaded', () => {
                             buttonTop.material.emissiveIntensity = 0.3;
                         }, 200);
                     }
-                    
+
                     // Start the game wave
                     startWave();
-                    
+
                     break; // Only interact with one object at a time
                 }
             }
         }
-        
+
         // Multiplayer: update remote players and broadcast local position
         updateRemotePlayers(deltaTime);
         updateNameLabels(camera);
         broadcastPosition(playerState);
-        
+
         renderer.render(scene, camera);
     }
-    
+
     function startGame() {
         // Update player name and color from input
         const enteredName = nameInput.value.trim() || 'Player';
         window.gameConfig.player.name = enteredName;
         window.gameConfig.player.color = selectedColor;
-        
+
         // Update local player mesh appearance
         updatePlayerColor(player, selectedColor);
-        
+
         // Hide join screen
         joinScreen.classList.add('hidden');
-        
+
         // Start game
         gameStarted = true;
-        
+
         // Reset game state
         resetGame();
-        
+
         // Initialize multiplayer
         if (window.gameConfig) {
-            initMultiplayer(scene, window.gameConfig, player, camera, renderer);
+            initMultiplayer(scene, window.gameConfig, player);
         }
     }
-    
+
     // Handle resize
     window.addEventListener('resize', () => {
         const width = container.clientWidth;
@@ -306,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
     });
-    
+
     camera.lookAt(player.position);
     animate();
 });

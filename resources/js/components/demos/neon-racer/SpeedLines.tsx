@@ -1,6 +1,6 @@
-import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Group, Mesh } from 'three';
+import { useRef, useMemo } from 'react';
+import type { Group, Mesh } from 'three';
 import { useGame } from './GameContext';
 
 interface LineData {
@@ -25,7 +25,7 @@ export default function SpeedLines() {
                 length: 0.5 + Math.random() * 1,
                 speed: 0.5 + Math.random() * 0.5,
             }));
-        }, [])
+        }, []),
     );
 
     const meshRefs = useRef<(Mesh | null)[]>([]);
@@ -47,7 +47,7 @@ export default function SpeedLines() {
 
             // Move forward (more positive Z) to create speed effect
             line.z += line.speed * delta * 15;
-            
+
             // Reset if too far forward (more positive)
             if (line.z > 5) {
                 line.z = -1 - Math.random() * 2;
@@ -87,4 +87,3 @@ export default function SpeedLines() {
         </group>
     );
 }
-

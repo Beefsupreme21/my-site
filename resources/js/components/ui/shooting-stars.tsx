@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import React, { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface ShootingStar {
   id: number;
@@ -141,11 +141,11 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
               y1={star.y}
               x2={
                 star.x -
-                80 * Math.cos((star.angle * Math.PI) / 180)
+                starWidth * Math.cos((star.angle * Math.PI) / 180)
               }
               y2={
                 star.y -
-                80 * Math.sin((star.angle * Math.PI) / 180)
+                starWidth * Math.sin((star.angle * Math.PI) / 180)
               }
             >
               <stop offset="0%" stopColor={starColor} stopOpacity={0} />
@@ -157,10 +157,10 @@ export const ShootingStars: React.FC<ShootingStarsProps> = ({
             x1={star.x}
             y1={star.y}
             x2={
-              star.x - 80 * Math.cos((star.angle * Math.PI) / 180)
+              star.x - starWidth * Math.cos((star.angle * Math.PI) / 180)
             }
             y2={
-              star.y - 80 * Math.sin((star.angle * Math.PI) / 180)
+              star.y - starWidth * Math.sin((star.angle * Math.PI) / 180)
             }
             stroke={`url(#shooting-star-gradient-${star.id})`}
             strokeWidth={starHeight * star.scale}

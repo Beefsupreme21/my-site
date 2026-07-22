@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import React, { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export const BackgroundLines = ({
   children,

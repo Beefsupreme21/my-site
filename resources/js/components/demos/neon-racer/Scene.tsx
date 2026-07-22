@@ -1,10 +1,10 @@
-import Player from './Player';
-import Track from './Track';
-import ObstacleManager from './ObstacleManager';
 import Explosion from './Explosion';
-import Sun from './Sun';
+import ObstacleManager from './ObstacleManager';
+import Player from './Player';
 import SpeedLines from './SpeedLines';
 import Starfield from './Starfield';
+import Sun from './Sun';
+import Track from './Track';
 
 export default function Scene() {
     return (
